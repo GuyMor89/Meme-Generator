@@ -1,0 +1,114 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+}
+
+
+.main-container {
+    display: grid;
+    
+    justify-items: center;
+}
+
+
+.nav-container {
+    margin-block: 1em;
+
+    display: grid;
+    justify-items: center;
+}
+
+.logo {
+    padding-block: 0.1em;
+    padding-inline: 0.4em;
+
+    font-size: 2em;
+    font-weight: 400;
+
+    border: 2px solid rgba(0, 0, 0, 0.205);
+    border-radius: 10px;
+
+}
+
+
+.gallery-container {
+    padding: 0.75em;
+    margin-inline: 0.75em;
+    margin-block-end: 1em;
+
+    width: 1012px;
+
+    display: grid;
+    justify-items: center;
+
+    border: 2px solid rgba(0, 0, 0, 0.258);
+    border-radius: 5px;
+
+    /* display: none; */
+}
+
+.gallery-search {
+    margin-block: 0.5em;
+    width: 75%;
+}
+
+.gallery {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 5px;
+
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+}
+
+.gallery img {
+    width: 100%;
+}
+
+
+
+.editor-container {
+    margin-inline: 0.75em;
+
+    width: fit-content;
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5em;
+}
+
+.canvas-container {
+    justify-self: end;
+
+    height: 503px;
+
+    border: 2px solid rgba(0, 0, 0, 0.212);
+    border-radius: 7px;
+
+}
+
+canvas{
+    border-radius: 5px;
+}
+
+
+.options {
+    justify-self: start;
+
+    width: 500px;
+    height: 503px;
+
+    border: 2px solid rgba(0, 0, 0, 0.212);
+    border-radius: 7px;
+}
