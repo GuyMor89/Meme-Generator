@@ -34,7 +34,7 @@ body {
     font-size: 2em;
     font-weight: 400;
 
-    border: 2px solid rgba(0, 0, 0, 0.205);
+    border: 3px solid rgba(0, 0, 0, 0.305);
     border-radius: 10px;
 
 }
@@ -53,7 +53,7 @@ body {
     border: 2px solid rgba(0, 0, 0, 0.258);
     border-radius: 5px;
 
-    /* display: none; */
+    display: none;
 }
 
 .gallery-search {
@@ -103,8 +103,11 @@ canvas{
 }
 
 
-.options {
+.options-container {
     justify-self: start;
+    padding: 1em;
+
+    display: grid;
 
     width: 500px;
     height: 503px;
@@ -112,3 +115,16 @@ canvas{
     border: 2px solid rgba(0, 0, 0, 0.212);
     border-radius: 7px;
 }
+
+.options-container input {
+    padding-inline-start: 0.3em;
+
+    height: 10%;
+
+    justify-self: center;
+
+    font-size: 2em;
+    border: 2px solid rgba(0, 0, 0, 0.212);
+    border-radius: 5px;
+}
+

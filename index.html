@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 
-<body>
+<body onload="onInit()">
 
     <header class="nav-container">
         <div class="logo">MemeMaster</div>
@@ -19,24 +19,6 @@
         <section class="gallery-container">
             <input type="text" class="gallery-search" placeholder="Find your template">
             <article class="gallery">
-                <div class="image image1">
-                    <img src="IMG/1.jpg">
-                </div>
-                <div class="image image2">
-                    <img src="IMG/2.jpg">
-                </div>
-                <div class="image image3">
-                    <img src="IMG/3.jpg">
-                </div>
-                <div class="image image4">
-                    <img src="IMG/4.jpg">
-                </div>
-                <div class="image image5">
-                    <img src="IMG/5.jpg">
-                </div>
-                <div class="image image6">
-                    <img src="IMG/6.jpg">
-                </div>
             </article>
         </section>
 
@@ -45,9 +27,33 @@
             <div class="canvas-container">
                 <canvas width="500px" height="500px"></canvas>
             </div>
-            <div class="options">
-                
-            </div>
+            <article class="options-container">
+                <div class="options">
+                    <div>
+                        <label for="text"></label>
+                        <input type="text" name="text" id="text" onchange="addText()">
+                    </div>
+                    <div>
+                        <label for="font-size">Font Size</label>
+                        <input type="range" name="font-size" id="font-size" min="5" max="100" value="40" oninput="changeSettings()">
+                        <span class="font-size-counter">40</span>
+                    </div>
+                    <div>
+                        <label for="font-color">Font Color</label>
+                        <input type="color" name="font-color" id="font-color" value="#000000" oninput="changeSettings()">
+                    </div>
+                    <div>
+                        <label for="stroke-color">Font Stroke</label>
+                        <input type="color" name="stroke" id="stroke-color" value="#000000" oninput="changeSettings()">
+                    </div>
+                    <div>
+                        <label for="stroke-width">Stroke Width</label>
+                        <input type="range" name="stroke-width" id="stroke-width" min="1" max="10" value="3"
+                            oninput="changeSettings()">
+                            <span class="stroke-width-counter">3</span>
+                    </div>
+                </div>
+            </article>
         </section>
 
     </main>
@@ -55,8 +61,11 @@
 
 
 
+    <script src="JS/meme.service.js"></script>
+    <script src="JS/canvas.service.js"></script>
+    <script src="JS/meme.controller.js"></script>
+    <script src="JS/canvas.controller.js"></script>
 
-    <script src="JS/main.js"></script>
 </body>
 
 </html>
