@@ -33,6 +33,21 @@ const defaultImageArray = [
     }
 ]
 
+const defaultMemeArray = [
+    {
+        id: 1,
+        url: 'IMG/7.jpg'
+    },
+    {
+        id: 2,
+        url: 'IMG/8.jpg'
+    },
+    {
+        id: 3,
+        url: 'IMG/9.jpg'
+    }
+]
+
 
 function getImgArray() {
 
@@ -41,4 +56,8 @@ function getImgArray() {
     imageArray = imageArray.filter(image => image.keyword.includes(filterBy.keyword))
 
     return imageArray
+}
+
+function getMemeArray() {
+    return defaultMemeArray
 }
