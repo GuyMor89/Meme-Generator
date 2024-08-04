@@ -17,7 +17,7 @@ function renderGalley() {
     injectedHTML.forEach(element => element.remove())
 
     const imageHTML = getImgArray().map(({ id, url }) =>
-        `<div class="image image${id}" data-gallery>
+        `<div class="image image${id}" data-idx>
         <img src="${url}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
         </div>`
     )
@@ -34,7 +34,7 @@ function renderSavedMemes() {
     injectedHTML.forEach(element => element.remove())
 
     const memeHTML = getMemeArray().map(({ id, url }) =>
-        `<div class="image image${id}" data-saved>
+        `<div class="image image${id}" data-idx>
         <img src="${url}">
         </div>`
     )
