@@ -1,6 +1,6 @@
 'use strict'
 
-const imgArray = [
+const defaultImageArray = [
     {
         id: 1,
         url: 'IMG/1.jpg',
@@ -33,6 +33,12 @@ const imgArray = [
     }
 ]
 
+
 function getImgArray() {
-    return imgArray
+
+    let imageArray = defaultImageArray
+
+    imageArray = imageArray.filter(image => image.keyword.includes(filterBy.keyword))
+
+    return imageArray
 }

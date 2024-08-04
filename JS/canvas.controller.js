@@ -5,7 +5,8 @@ const gElCanvas = document.querySelector('canvas')
 const CTX = gElCanvas.getContext('2d')
 let currImage = {}
 
-let currentText = null
+let textToMove = null
+let textToEdit = null
 const textArray = []
 
 
@@ -47,29 +48,31 @@ function coverCanvasWithImg(elImg) {
 
 
 function onDown(event) {
-    startDragging(getEventPos(event))
+    textToEdit = null
+    findText(getEventPos(event))
 }
 
 function onUp() {
-    currentText = null
+    textToMove = null
 }
 
 function onMove(event) {
 
-    if (currentText) {
+    if (textToMove) {
         let { currentX, currentY } = getEventPos(event)
-        const {fontColor, strokeColor, strokeWidth} = textSettings
 
-        currentText.X = currentX - currentText.diffX
-        currentText.Y = currentY - currentText.diffY
+        textToMove.X = currentX - textToMove.diffX
+        textToMove.Y = currentY - textToMove.diffY
 
-        renderText(fontColor, strokeColor, strokeWidth)
+        renderText()
+
+        // textToEdit = null
     }
 }
 
 
 
-function startDragging({ currentX, currentY }) {
+function findText({ currentX, currentY }) {
 
     for (let text of textArray) {
         const textWidth = CTX.measureText(text.content).width
@@ -81,31 +84,80 @@ function startDragging({ currentX, currentY }) {
             currentY >= text.Y - textHeight / 2 &&
             currentY <= text.Y + textHeight / 2
         ) {
-            currentText = text
+            textToMove = text
+            textToEdit = text
             text.diffX = currentX - text.X
             text.diffY = currentY - text.Y
             break
         }
     }
+    if (textToEdit) startToEditText()
+
 }
 
 
-function addText() {
-    const elInput = document.querySelector('.options input')
-    const {fontSize, fontColor, strokeColor, strokeWidth, font} = textSettings
+function startToEditText() {
 
-    const newText = {
-        content: elInput.value,
-        X: gElCanvas.width / 2,
-        Y: (gElCanvas.height / 2) + 50 * textArray.length,
-        font: `${fontSize}px ${font}`,
-        fontColor: `${fontColor}`,
-        strokeColor: `${strokeColor}`,
-        strokeWidth: `${strokeWidth}`
+    const { content, fontSize, fontColor, strokeColor, strokeWidth } = textToEdit
+
+    const contentInput = document.querySelector('#text')
+    const fontSizeInput = document.querySelector('#font-size')
+    const fontColorInput = document.querySelector('#font-color')
+    const strokeColorInput = document.querySelector('#stroke-color')
+    const strokeWidthInput = document.querySelector('#stroke-width')
+
+    contentInput.value = content
+    fontSizeInput.value = parseInt(fontSize)
+    fontColorInput.value = fontColor
+    strokeColorInput.value = strokeColor
+    strokeWidthInput.value = strokeWidth
+}
+
+
+function editText({ ID }, textInput) {
+
+    let textIDToEdit = textArray.findIndex(text => text.ID === ID)
+
+    const { fontSize, fontColor, strokeColor, strokeWidth, fontType } = textSettings
+
+    textArray[textIDToEdit].content = textInput.value
+    textArray[textIDToEdit].fontSize = `${fontSize}px`
+    textArray[textIDToEdit].fontColor = `${fontColor}`
+    textArray[textIDToEdit].strokeColor = `${strokeColor}`
+    textArray[textIDToEdit].strokeWidth = `${strokeWidth}`
+    textArray[textIDToEdit].fontType = `${fontType}`
+
+    // textToEdit = null
+
+    renderText()
+}
+
+
+function onAddText(event) {
+
+    const textInput = document.querySelector('#text')
+
+    if (textToEdit) return editText(textToEdit, textInput)
+
+    const { fontSize, fontColor, strokeColor, strokeWidth, fontType } = textSettings
+
+    if (event.key === 'Enter') {
+        const newText = {
+            ID: textArray.length,
+            content: textInput.value,
+            X: gElCanvas.width / 2,
+            Y: (gElCanvas.height / 2) + 50 * textArray.length,
+            fontSize: `${fontSize}px`,
+            fontColor: `${fontColor}`,
+            strokeColor: `${strokeColor}`,
+            strokeWidth: `${strokeWidth}`,
+            fontType: `${fontType}`,
+        }
+        textArray.push(newText)
+
+        textInput.value = ''
+        textInput.blur()
     }
-    textArray.push(newText)
-
-    elInput.value = ''
 
     renderText()
 }
@@ -117,17 +169,17 @@ function renderText() {
     } else {
         coverCanvasWithImg(currImage.elImg)
     }
-    textArray.forEach(({X, Y, content, fontColor, strokeColor, strokeWidth, font}) => {
+    textArray.forEach(({ X, Y, content, fontColor, strokeColor, strokeWidth, fontSize, fontType }) => {
         CTX.beginPath()
         CTX.textAlign = 'center'
         CTX.textBaseline = 'middle'
-        CTX.font = font
+        CTX.font = `${fontSize} ${fontType}`
 
-        CTX.fillText(content, X, Y)
         CTX.fillStyle = fontColor
-        CTX.strokeText(content, X, Y)
         CTX.strokeStyle = strokeColor
-        CTX.strokeWidth = strokeWidth
+        CTX.lineWidth = strokeWidth
+        CTX.fillText(content, X, Y)
+        CTX.strokeText(content, X, Y)
     })
 }
 

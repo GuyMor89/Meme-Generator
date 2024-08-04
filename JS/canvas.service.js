@@ -5,7 +5,7 @@ const textSettings = {
     fontColor: '#000000',
     strokeColor: '#000000',
     strokeWidth: 3,
-    font: 'Segoe UI',
+    fontType: 'Segoe UI',
 }
 
 function changeSettings() {
@@ -25,9 +25,5 @@ function changeSettings() {
 
     strokeWidthCounter.innerText = strokeWidth
     fontSizeCounter.innerText = fontSize
-
-    console.log(textSettings);
-    console.log(textArray);
-    
     
 }

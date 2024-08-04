@@ -13,18 +13,39 @@ body {
 }
 
 
-.main-container {
-    display: grid;
-    
-    justify-items: center;
+.disappear {
+    display: none !important;
 }
 
 
-.nav-container {
-    margin-block: 1em;
+.main-container {
+    display: grid;
+
+    justify-items: center;
+
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+header {
+    margin-block: 0.5em;
+
+    width: 100%;
+    grid-column: 1 / -1;
 
     display: grid;
-    justify-items: center;
+
+    grid-template-columns: subgrid;
+
+    background-color: #f2f2f2;
+}
+
+.sub-header {
+    grid-column: 2;
+
+    display: grid;
+    grid-auto-flow: column;
+
+    grid-template-columns: 1fr 1fr;
 }
 
 .logo {
@@ -32,12 +53,38 @@ body {
     padding-inline: 0.4em;
 
     font-size: 2em;
-    font-weight: 400;
+    font-weight: 500;
 
-    border: 3px solid rgba(0, 0, 0, 0.305);
-    border-radius: 10px;
+    /* border: 1px solid rgba(0, 0, 0, 0.205); */
+    border-radius: 5px;
 
+    justify-self: start;
+    align-self: center;
 }
+
+.nav-container {
+    /* margin-block: 1em; */
+
+    display: grid;
+    grid-auto-flow: column;
+
+    justify-items: center;
+}
+
+.nav-container>div {
+    padding-inline: 1em;
+    padding-block: 0.5em;
+
+    font-size: 1.5em;
+    /* border: 1px solid rgba(0, 0, 0, 0.205); */
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+
+
+
 
 
 .gallery-container {
@@ -45,25 +92,68 @@ body {
     margin-inline: 0.75em;
     margin-block-end: 1em;
 
-    width: 1012px;
+    grid-column: 2;
+
+    width: 1008px;
 
     display: grid;
     justify-items: center;
 
+    grid-template-columns: auto auto;
+    column-gap: 1em;
+
     border: 2px solid rgba(0, 0, 0, 0.258);
     border-radius: 5px;
-
-    display: none;
 }
 
 .gallery-search {
-    margin-block: 0.5em;
-    width: 75%;
+    grid-column: 1;
+
+    margin-block-end: 0.5em;
+    padding-inline: 0.5em;
+    padding-block: 0.25em;
+    width: 100%;
+
+    justify-self: center;
+
+    border: 2px solid rgba(0, 0, 0, 0.233);
+    border-radius: 3px;
+
+    font-size: 1.25em;
 }
 
-.gallery {
+.keyword-display-container {
+    grid-column: 2;
+
+    margin-block-end: 0.5em;
+
+    width: 100%;
+
+    display: grid;
+    justify-items: center;
+
+    border: 2px solid rgba(0, 0, 0, 0.233);
+    border-radius: 3px;
+}
+
+.keyword-display {
     display: grid;
     grid-auto-flow: column;
+    gap: 1em;
+
+    width: fit-content;
+}
+
+.keyword-display > div {
+    cursor: pointer;
+
+    font-size: 1em;
+}
+
+
+.gallery {    
+    grid-column: 1 / -1;
+    display: grid;
     column-gap: 5px;
 
     grid-template-columns: 1fr 1fr 1fr;
@@ -73,12 +163,15 @@ body {
 
 .gallery img {
     width: 100%;
+    cursor: pointer;
 }
 
 
 
 .editor-container {
     margin-inline: 0.75em;
+
+    grid-column: 2;
 
     width: fit-content;
 
@@ -98,9 +191,10 @@ body {
 
 }
 
-canvas{
+canvas {
     border-radius: 5px;
 }
+
 
 
 .options-container {
@@ -116,10 +210,19 @@ canvas{
     border-radius: 7px;
 }
 
-.options-container input {
-    padding-inline-start: 0.3em;
+.options {
+    display: grid;
 
-    height: 10%;
+    grid-auto-flow: column;
+
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5em;
+
+    height: fit-content;
+}
+
+.options input {
+    padding-inline-start: 0.3em;
 
     justify-self: center;
 
@@ -128,3 +231,93 @@ canvas{
     border-radius: 5px;
 }
 
+
+
+.options>div:not(:first-child) {
+    margin-block-start: 2em;
+
+    grid-row: 2;
+    gap: 1.25em;
+}
+
+.options>div:nth-child(3),
+.options>div:nth-child(4) {
+    gap: 0.3em
+}
+
+.options>div:first-child {
+    grid-column: 1 / -1;
+}
+
+.options div {
+    display: grid;
+
+    justify-items: center;
+
+    height: fit-content;
+
+}
+
+.options label {
+    font-size: 1.25em;
+}
+
+.options span {
+    font-size: 1.5em;
+
+}
+
+
+input[type="range"] {
+    padding: 0;
+    margin: 0;
+    appearance: none;
+    height: 0px;
+    border: none;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    /* width: 100%; */
+    padding: 0;
+    height: 13px;
+    cursor: pointer;
+    background: #000000;
+    border-radius: 5px;
+    margin-block-start: -5px;
+
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #333;
+    margin-block-start: -5px;
+}
+
+
+
+#font-color,
+#stroke-color {
+    appearance: none;
+    padding: 0;
+
+    border-radius: 2px;
+
+    height: 1.5em;
+    width: 1.5em;
+}
+
+#font-color::-webkit-color-swatch-wrapper,
+#stroke-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#font-color::-webkit-color-swatch,
+#stroke-color::-webkit-color-swatch {
+    border: 0px
+}

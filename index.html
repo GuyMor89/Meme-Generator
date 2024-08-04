@@ -10,20 +10,31 @@
 
 <body onload="onInit()">
 
-    <header class="nav-container">
-        <div class="logo">MemeMaster</div>
-    </header>
-
     <main class="main-container">
 
+        <header>
+            <div class="sub-header">
+                <div class="logo">MemeMaster</div>
+                <article class="nav-container">
+                    <div class="gallery-button" onclick="switchPages(this)">Gallery</div>
+                    <div class="editor-button" onclick="switchPages(this)">Editor</div>
+                    <div class="saved-button" onclick="switchPages(this)">Saved</div>
+                </article>
+            </div>
+        </header>
+
         <section class="gallery-container">
-            <input type="text" class="gallery-search" placeholder="Find your template">
+            <input type="text" class="gallery-search" placeholder="Find your template" oninput="onSearchGallery(this)"
+                onchange="onAddKeywordsToDisplay(this)">
+            <div class="keyword-display-container">
+                <div class="keyword-display"></div>
+            </div>
             <article class="gallery">
             </article>
         </section>
 
 
-        <section class="editor-container">
+        <section class="editor-container disappear">
             <div class="canvas-container">
                 <canvas width="500px" height="500px"></canvas>
             </div>
@@ -31,26 +42,30 @@
                 <div class="options">
                     <div>
                         <label for="text"></label>
-                        <input type="text" name="text" id="text" onchange="addText()">
+                        <input type="text" name="text" id="text" oninput="onAddText(event)"
+                            onkeydown="onAddText(event)">
                     </div>
                     <div>
                         <label for="font-size">Font Size</label>
-                        <input type="range" name="font-size" id="font-size" min="5" max="100" value="40" oninput="changeSettings()">
+                        <input type="range" name="font-size" id="font-size" min="5" max="100" value="40"
+                            oninput="changeSettings(); onAddText(event);">
                         <span class="font-size-counter">40</span>
                     </div>
                     <div>
-                        <label for="font-color">Font Color</label>
-                        <input type="color" name="font-color" id="font-color" value="#000000" oninput="changeSettings()">
+                        <label for="font-color">Color</label>
+                        <input type="color" name="font-color" id="font-color" value="#000000"
+                            oninput="changeSettings(); onAddText(event);">
                     </div>
                     <div>
-                        <label for="stroke-color">Font Stroke</label>
-                        <input type="color" name="stroke" id="stroke-color" value="#000000" oninput="changeSettings()">
+                        <label for="stroke-color">Border</label>
+                        <input type="color" name="stroke-color" id="stroke-color" value="#000000"
+                            oninput="changeSettings(); onAddText(event);">
                     </div>
                     <div>
-                        <label for="stroke-width">Stroke Width</label>
+                        <label for="stroke-width">Border Width</label>
                         <input type="range" name="stroke-width" id="stroke-width" min="1" max="10" value="3"
-                            oninput="changeSettings()">
-                            <span class="stroke-width-counter">3</span>
+                            oninput="changeSettings(); onAddText(event);">
+                        <span class="stroke-width-counter">3</span>
                     </div>
                 </div>
             </article>
