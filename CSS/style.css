@@ -10,6 +10,7 @@ html {
 
 body {
     margin: 0;
+    background-color: rgba(242, 242, 242, 0.29);
 }
 
 
@@ -18,12 +19,13 @@ body {
 }
 
 
+
 .main-container {
     display: grid;
 
     justify-items: center;
 
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: minmax(40px, 1fr) 1fr minmax(40px, 1fr);
 }
 
 header {
@@ -36,7 +38,7 @@ header {
 
     grid-template-columns: subgrid;
 
-    background-color: #f2f2f2;
+    background-color: #e8e8e8;
 }
 
 .sub-header {
@@ -46,6 +48,8 @@ header {
     grid-auto-flow: column;
 
     grid-template-columns: 1fr 1fr;
+
+    width: 1034px;
 }
 
 .logo {
@@ -60,6 +64,8 @@ header {
 
     justify-self: start;
     align-self: center;
+
+    cursor: pointer;
 }
 
 .nav-container {
@@ -94,7 +100,7 @@ header {
 
     grid-column: 2;
 
-    width: 1008px;
+    width: 1010.5px;
 
     display: grid;
     justify-items: center;
@@ -102,6 +108,7 @@ header {
     grid-template-columns: auto auto;
     column-gap: 1em;
 
+    background-color: white;
     border: 2px solid rgba(0, 0, 0, 0.258);
     border-radius: 5px;
 }
@@ -144,14 +151,14 @@ header {
     width: fit-content;
 }
 
-.keyword-display > div {
+.keyword-display>div {
     cursor: pointer;
 
-    font-size: 1em;
+    margin-block: auto;
 }
 
 
-.gallery {    
+.gallery {
     grid-column: 1 / -1;
     display: grid;
     column-gap: 5px;
@@ -179,6 +186,8 @@ header {
     grid-auto-flow: column;
     grid-template-columns: 1fr 1fr;
     gap: 0.5em;
+
+    background-color: white;
 }
 
 .canvas-container {
@@ -320,4 +329,90 @@ input[type="range"]::-webkit-slider-thumb {
 #font-color::-webkit-color-swatch,
 #stroke-color::-webkit-color-swatch {
     border: 0px
+}
+
+
+
+
+.download-container {
+    margin-block-start: 0.5em;
+
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    display: grid;
+    grid-auto-flow: column;
+
+    justify-items: center;
+}
+
+.download-button-container {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 1em;
+}
+
+.download-button-container > a {
+    padding-inline: 5px;
+    padding-block: 2px;
+
+    text-decoration: none;
+    font-size: 1.5em;
+    color: inherit;
+    background-color: white;
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 5px;
+
+    transition: background-color 300ms;
+}
+
+.download-button:hover {
+    background-color: rgba(0, 0, 0, 0.034);
+}
+
+
+.saved-memes-container {
+    padding: 0.75em;
+    margin-inline: 0.75em;
+    margin-block-end: 1em;
+
+    grid-column: 2;
+
+    width: 1010.5px;
+
+    display: grid;
+    justify-items: center;
+
+    grid-template-columns: auto auto;
+    column-gap: 1em;
+
+    background-color: white;
+    border: 2px solid rgba(0, 0, 0, 0.258);
+    border-radius: 5px;
+}
+
+.saved-memes {
+    grid-column: 1 / -1;
+    display: grid;
+    column-gap: 5px;
+
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.saved-memes img {
+    width: 100%;
+    cursor: pointer;
+}
+
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 3em;
+
+    background-color: #e8e8e8;
 }

@@ -6,23 +6,43 @@ let keywordsToDisplay = []
 
 function onInit() {
     renderGalley()
+    renderSavedMemes()
     addListeners()
 }
 
 function renderGalley() {
     const elGallery = document.querySelector('.gallery')
 
-    const injectedHTML = document.querySelectorAll('[data-idx]')
+    const injectedHTML = document.querySelectorAll('[data-gallery]')
     injectedHTML.forEach(element => element.remove())
 
     const imageHTML = getImgArray().map(({ id, url }) =>
         `<div class="image image${id}" data-idx>
-        <img src="${url}" onclick="coverCanvasWithImg(this); switchPages(this);">
+        <img src="${url}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
         </div>`
     )
 
     elGallery.insertAdjacentHTML('beforeend', imageHTML.join(''))
 }
+
+
+
+function renderSavedMemes() {
+    const elSavedMemes = document.querySelector('.saved-memes')
+
+    const injectedHTML = document.querySelectorAll('[data-saved]')
+    injectedHTML.forEach(element => element.remove())
+
+    const memeHTML = getMemeArray().map(({ id, url }) =>
+        `<div class="image image${id}" data-idx>
+        <img src="${url}">
+        </div>`
+    )
+
+    elSavedMemes.insertAdjacentHTML('beforeend', memeHTML.join(''))
+}
+
+
 
 function onSearchGallery(element) {
 
@@ -68,22 +88,24 @@ function changeKeywordSize(elKeyword) {
 
 
 
-function switchPages(element) {
+function onSwitchPages(element) {
     const galleryContainer = document.querySelector('.gallery-container')
     const editorContainer = document.querySelector('.editor-container')
-    // const savedContainer = document.querySelector('.saved-container')
+    const savedContainer = document.querySelector('.saved-memes-container')
 
-    if (element.innerText === 'Gallery') {
+    if (element.innerText === 'Gallery' || element.innerText === 'MemeMaster') {
         galleryContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
+        savedContainer.classList.add('disappear')
     }
-    if (element.innerText === 'Editor') {
-        galleryContainer.classList.add('disappear')
+    if (element.innerText === 'Editor' || element.nodeName === 'IMG') {
         editorContainer.classList.remove('disappear')
-    }
-    if (element.nodeName === 'IMG') {
         galleryContainer.classList.add('disappear')
-        editorContainer.classList.remove('disappear')
+        savedContainer.classList.add('disappear')
     }
-
+    if (element.innerText === 'Saved') {
+        savedContainer.classList.remove('disappear')
+        editorContainer.classList.add('disappear')
+        galleryContainer.classList.add('disappear')
+    }
 }
