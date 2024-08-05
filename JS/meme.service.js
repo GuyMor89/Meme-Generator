@@ -33,20 +33,7 @@ const defaultImageArray = [
     }
 ]
 
-const defaultMemeArray = [
-    {
-        id: 1,
-        url: 'IMG/7.jpg'
-    },
-    {
-        id: 2,
-        url: 'IMG/8.jpg'
-    },
-    {
-        id: 3,
-        url: 'IMG/9.jpg'
-    }
-]
+const savedMemeArray = []
 
 
 function getImgArray() {
@@ -59,5 +46,5 @@ function getImgArray() {
 }
 
 function getMemeArray() {
-    return defaultMemeArray
+    return savedMemeArray
 }

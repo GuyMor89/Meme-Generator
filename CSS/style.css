@@ -83,11 +83,16 @@ header {
 
     font-size: 1.5em;
     /* border: 1px solid rgba(0, 0, 0, 0.205); */
-    border-radius: 5px;
+    /* border-radius: 5px; */
 
     cursor: pointer;
+
+    transition: background-color 600ms;
 }
 
+.nav-container>div:hover {
+    background-color: rgb(240, 240, 240);
+}
 
 
 
@@ -352,7 +357,7 @@ input[type="range"]::-webkit-slider-thumb {
     gap: 1em;
 }
 
-.download-button-container > a {
+.download-button-container>a {
     padding-inline: 5px;
     padding-block: 2px;
 
@@ -366,7 +371,7 @@ input[type="range"]::-webkit-slider-thumb {
     transition: background-color 300ms;
 }
 
-.download-button:hover {
+.download-button-container>a:hover {
     background-color: rgba(0, 0, 0, 0.034);
 }
 

@@ -10,8 +10,19 @@ function onCreateDownloadLink(elLink) {
 }
 
 
+function onSaveMeme() {
+    savedMemeArray.push(
+        {
+            id: +currImage.elImg.id,
+            url: convertCanvasToImage(),
+            lines: textArray
+        }
+    )    
 
+    textArray = []
 
+    renderSavedMemes()
+}
 
 
 function onCreateShareLink() {

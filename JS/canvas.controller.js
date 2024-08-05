@@ -7,7 +7,7 @@ let currImage = {}
 
 let textToMove = null
 let textToEdit = null
-const textArray = []
+let textArray = []
 
 
 function addListeners() {
@@ -40,7 +40,7 @@ function getEventPos(event) {
 
 
 function coverCanvasWithImg(elImg) {
-    currImage = { elImg }
+    currImage = { elImg }    
 
     gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * gElCanvas.width
     CTX.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)

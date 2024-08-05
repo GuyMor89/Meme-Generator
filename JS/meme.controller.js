@@ -13,12 +13,12 @@ function onInit() {
 function renderGalley() {
     const elGallery = document.querySelector('.gallery')
 
-    const injectedHTML = document.querySelectorAll('[data-gallery]')
+    const injectedHTML = document.querySelectorAll('[data-idx]')
     injectedHTML.forEach(element => element.remove())
 
     const imageHTML = getImgArray().map(({ id, url }) =>
         `<div class="image image${id}" data-gallery>
-        <img src="${url}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
+        <img src="${url}" id="${id}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
         </div>`
     )
 
@@ -35,11 +35,24 @@ function renderSavedMemes() {
 
     const memeHTML = getMemeArray().map(({ id, url }) =>
         `<div class="image image${id}" data-saved>
-        <img src="${url}">
+        <img src="${url}" id="${id}" onclick="restoreMemeToEditor(this); onSwitchPages(this)">
         </div>`
     )
 
     elSavedMemes.insertAdjacentHTML('beforeend', memeHTML.join(''))
+}
+
+
+function restoreMemeToEditor(elImg) {
+    const elSavedMemeImg = document.getElementById(`${elImg.id}`)
+    
+    coverCanvasWithImg(elSavedMemeImg)
+
+    const currentMeme = savedMemeArray.find(meme => meme.id === +elImg.id)
+
+    textArray = currentMeme.lines    
+
+    renderText()
 }
 
 
