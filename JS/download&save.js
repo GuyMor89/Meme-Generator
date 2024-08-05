@@ -10,16 +10,24 @@ function onCreateDownloadLink(elLink) {
 }
 
 
-function onSaveMeme() {
-    savedMemeArray.push(
+function onSaveMeme() {    
+    let memeToSave = 
         {
-            id: +currImage.elImg.id,
+            imgID: currImage.id.replace('img', ''),
             url: convertCanvasToImage(),
-            lines: textArray
-        }
-    )    
+            lines: [...textArray]
+        }  
 
-    textArray = []
+    const memeID = savedMemeArray.findIndex(meme => meme.url === memeToSave.url)
+
+    if (memeID !== -1) {
+        savedMemeArray[memeID] = {...savedMemeArray[memeID], ...memeToSave}
+    } else {
+        savedMemeArray.push(memeToSave)
+    }
+
+    textArray.length = 0
+    textToEdit = null
 
     renderSavedMemes()
 }

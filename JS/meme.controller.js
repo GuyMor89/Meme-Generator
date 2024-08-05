@@ -3,6 +3,8 @@
 
 let filterBy = { keyword: '' }
 let keywordsToDisplay = []
+let currentMeme = null
+
 
 function onInit() {
     renderGalley()
@@ -18,7 +20,7 @@ function renderGalley() {
 
     const imageHTML = getImgArray().map(({ id, url }) =>
         `<div class="image image${id}" data-gallery>
-        <img src="${url}" id="${id}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
+        <img src="${url}" id="img${id}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
         </div>`
     )
 
@@ -33,9 +35,9 @@ function renderSavedMemes() {
     const injectedHTML = document.querySelectorAll('[data-saved]')
     injectedHTML.forEach(element => element.remove())
 
-    const memeHTML = getMemeArray().map(({ id, url }) =>
-        `<div class="image image${id}" data-saved>
-        <img src="${url}" id="${id}" onclick="restoreMemeToEditor(this); onSwitchPages(this)">
+    const memeHTML = getMemeArray().map(({ id, url, imgID }) =>
+        `<div class="saved saved${id}" data-saved>
+        <img src="${url}" id="meme${imgID}" onclick="setCurrentMeme(this); onSwitchPages(this)">
         </div>`
     )
 
@@ -43,14 +45,21 @@ function renderSavedMemes() {
 }
 
 
-function restoreMemeToEditor(elImg) {
-    const elSavedMemeImg = document.getElementById(`${elImg.id}`)
-    
-    coverCanvasWithImg(elSavedMemeImg)
+function setCurrentMeme(elMeme) {
+    currentMeme = savedMemeArray.find(meme => meme.url === elMeme.src)    
 
-    const currentMeme = savedMemeArray.find(meme => meme.id === +elImg.id)
+    restoreMemeToEditor(currentMeme)
 
-    textArray = currentMeme.lines    
+    currentMeme = null
+}
+
+
+function restoreMemeToEditor(currentMeme) {
+    const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
+
+    coverCanvasWithImg(elSavedMemeImg)    
+
+    textArray = currentMeme.lines.map(line => ({ ...line }))
 
     renderText()
 }
