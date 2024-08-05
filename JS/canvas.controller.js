@@ -3,7 +3,7 @@
 
 const gElCanvas = document.querySelector('canvas')
 const CTX = gElCanvas.getContext('2d')
-let currImage = {}
+let currImage
 
 let textToMove = null
 let textToEdit = null
@@ -39,8 +39,8 @@ function getEventPos(event) {
 }
 
 
-function coverCanvasWithImg(elImg) {
-    currImage = { elImg }    
+function coverCanvasWithImg(elImg) {    
+    currImage = elImg    
 
     gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * gElCanvas.width
     CTX.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
@@ -119,7 +119,7 @@ function editText({ ID }, textInput) {
     let textIDToEdit = textArray.findIndex(text => text.ID === ID)
 
     const { fontSize, fontColor, strokeColor, strokeWidth, fontType } = textSettings
-
+    
     textArray[textIDToEdit].content = textInput.value
     textArray[textIDToEdit].fontSize = `${fontSize}px`
     textArray[textIDToEdit].fontColor = `${fontColor}`
@@ -163,11 +163,11 @@ function onAddText(event) {
 }
 
 
-function renderText() {
-    if (Object.keys(currImage).length === 0) {
+function renderText() {    
+    if (!currImage) {
         CTX.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
     } else {
-        coverCanvasWithImg(currImage.elImg)
+        coverCanvasWithImg(currImage)
     }
     textArray.forEach(({ X, Y, content, fontColor, strokeColor, strokeWidth, fontSize, fontType }) => {
         CTX.beginPath()

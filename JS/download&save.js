@@ -11,15 +11,24 @@ function onCreateDownloadLink(elLink) {
 
 
 function onSaveMeme() {
-    savedMemeArray.push(
+    let currentMeme = 
         {
-            id: +currImage.elImg.id,
+            // id: savedMemeArray.length,
+            imgID: currImage.id,
             url: convertCanvasToImage(),
             lines: textArray
-        }
-    )    
+        }  
+
+    const memeID = savedMemeArray.findIndex(meme => meme.url === currentMeme.url)
+
+    if (memeID !== -1) {
+        savedMemeArray[memeID] = {...savedMemeArray[memeID], ...currentMeme}
+    } else {
+        savedMemeArray.push(currentMeme)
+    }
 
     textArray = []
+    textToEdit = null
 
     renderSavedMemes()
 }
