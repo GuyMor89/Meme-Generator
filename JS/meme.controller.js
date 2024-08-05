@@ -13,7 +13,7 @@ function onInit() {
 function renderGalley() {
     const elGallery = document.querySelector('.gallery')
 
-    const injectedHTML = document.querySelectorAll('[data-idx]')
+    const injectedHTML = document.querySelectorAll('[data-gallery]')
     injectedHTML.forEach(element => element.remove())
 
     const imageHTML = getImgArray().map(({ id, url }) =>
