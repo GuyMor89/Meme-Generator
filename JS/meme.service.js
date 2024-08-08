@@ -50,8 +50,8 @@ function getMemeArray() {
 
 function addImage(url = image.src) {
     const imageArray = gImages
-    const imageID = imageArray[imageArray.length - 1].id + 1
-
+    const imageID = imageArray.length + 1
+    
     imageArray.unshift({
         id: imageID,
         url: url,

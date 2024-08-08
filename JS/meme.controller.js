@@ -20,14 +20,14 @@ function renderGallery() {
 
     const imageHTML = getImgArray().map(({ id, url }) =>
         `<div class="image image${id}" data-gallery>
-        <img src="${url}" id="img${id}" onclick="onOpenImageMenu(this)">
+        <img src="${url}" id="img${id}" onclick="onOpenImageMenu(event, this)">
         <div class="image-button-container-overlay hidden" id="overlay${id}">
         <div class="image-button-container">
-        <div class="use-button" id="use${id}" onclick="coverCanvasWithImg(this); onclick="onSwitchPages(this);">
+        <div class="use-button" id="use${id}" onclick="coverCanvasWithImg(this); onSwitchPages(this); onOpenImageMenu(event, this)">
         <i class="fa-solid fa-check" ></i>
         </div>
-        <div class="delete-button" id=btn${id} onclick="onDeleteImage()">
-        <i class="fa-solid fa-trash-can" onclick="onDeleteImage(this)"></i>
+        <div class="delete-button" id="btn${id}" onclick="onDeleteImage(this); onOpenImageMenu(event, this);">
+        <i class="fa-solid fa-trash-can"></i>
         </div>
         </div>
         </div>
@@ -47,7 +47,7 @@ function renderSavedMemes() {
 
     const memeHTML = getMemeArray().map(({ id, url, imgID }) =>
         `<div class="saved saved${id}" data-saved>
-        <img src="${url}" id="meme${imgID}" onclick="setCurrentMeme(this); onSwitchPages(this)">
+        <img src="${url}" id="meme${imgID}" class="saved" onclick="setCurrentMeme(this); onSwitchPages(this)">
         </div>`
     )
 
@@ -68,10 +68,6 @@ function restoreMemeToEditor(currentMeme) {
     const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
 
     coverCanvasWithImg(elSavedMemeImg)
-    
-    
-    
-    currentMeme = savedMemeArray.find(meme => meme.imgID === elImg.id)
 
     textArray = currentMeme.lines.map(line => ({ ...line }))
 
@@ -145,18 +141,36 @@ function onAddImage() {
     renderGallery()
 }
 
+
+function onDownloadImage() {
+
+    if (!image.src) return
+
+    const imageUrl = image.src; // Replace with your image URL
+
+    // Create a temporary <a> element with a download attribute
+    const a = document.createElement('a');
+    a.href = imageUrl;
+    a.download = 'image.jpg'; // Name of the saved file
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+
 function onUploadImage(event) {
     loadImageFromInput(event, addImage)
 
     setTimeout(() => {
         renderGallery()
-    }, 500);
+    }, 500)
 }
 
 function loadImageFromInput(ev, addImage) {
     const reader = new FileReader()
     reader.onload = function (event) {
         let elImg = new Image()
+        elImg.crossOrigin = "anonymous"
         elImg.src = event.target.result
         elImg.onload = () => addImage(elImg.src)
     }
@@ -165,6 +179,13 @@ function loadImageFromInput(ev, addImage) {
 
 
 function onDeleteImage(elDeleteBtn) {
+    const elImg = document.querySelector(`.image${parseInt(elDeleteBtn.id.replace(/\D/g, ''), 10)} img`)
+    console.log(elImg.src);
+
+    const ImgIDToDelete = getImgArray().findIndex(img => img.url === elImg.src)
+
+    console.log(ImgIDToDelete);
+
 
 }
 
@@ -174,14 +195,14 @@ function onDeleteImage(elDeleteBtn) {
 function onSwitchPages(element) {
     const galleryContainer = document.querySelector('.gallery-container')
     const editorContainer = document.querySelector('.editor-container')
-    const savedContainer = document.querySelector('.saved-memes-container')    
+    const savedContainer = document.querySelector('.saved-memes-container')
 
     if (element.innerText === 'Gallery' || element.innerText === 'MemeMaster') {
         galleryContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
     }
-    if (element.innerText === 'Editor' || element.classList.contains('use-button')) {
+    if (element.innerText === 'Editor' || element.classList.contains('use-button') || element.classList.contains('saved')) {
         editorContainer.classList.remove('disappear')
         galleryContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
@@ -216,12 +237,35 @@ function toggleOptionsMenu(elIcon) {
 }
 
 
-function onOpenImageMenu(elImg) {
-    const imageButtonMenu = document.getElementById(`overlay${parseInt(elImg.id.replace(/\D/g, ''), 10)}`)
+document.addEventListener('click', function (event) {
+    // Retrieve all overlays
+    const overlays = document.querySelectorAll('.image-button-container-overlay:not(.hidden)')
 
-    if (imageButtonMenu.classList.contains('hidden')) {
-        imageButtonMenu.classList.remove('hidden')
-    } else {
-        imageButtonMenu.classList.add('hidden')
-    }    
+    // Check if the click target is part of any overlay
+    let isClickInsideOverlay = Array.from(overlays).some(overlay => {
+        return overlay.contains(event.target)
+    })
+
+    // If the click is not inside any open overlay, hide all overlays
+    if (!isClickInsideOverlay) {
+        overlays.forEach(overlay => overlay.classList.add('hidden'))
+    }
+});
+
+
+
+function onOpenImageMenu(event, elImg) {
+    event.stopPropagation()
+
+    const overlayID = parseInt(elImg.id.replace(/\D/g, ''), 10)
+    const overlay = `overlay${overlayID}`
+    const imageButtonMenu = document.getElementById(overlay)
+    const allOverlays = document.querySelectorAll('.image-button-container-overlay')
+
+    allOverlays.forEach(overlay => {
+        if (overlay.id !== overlay)
+            overlay.classList.add('hidden')
+    })
+
+    imageButtonMenu.classList.remove('hidden')
 }

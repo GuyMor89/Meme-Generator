@@ -10,6 +10,19 @@ let textToEdit = null
 let deleteBtn = {}
 let textArray = []
 
+const textSettings = {
+    fontSize: 40,
+    fontColor: '#000000',
+    strokeColor: '#000000',
+    strokeWidth: 3,
+    fontType: 'Segoe UI',
+    bold: '',
+    italicize: '',
+    underline: false,
+    strikethrough: false
+}
+
+
 
 function addListeners() {
     gElCanvas.addEventListener('touchstart', onDown)
@@ -40,8 +53,8 @@ function getEventPos(event) {
 }
 
 
-function coverCanvasWithImg(elImgBtn) {
-    const elImg = document.querySelector(`.image${elImgBtn.id} img`)
+function coverCanvasWithImg(elImgBtn) {    
+    const elImg = document.querySelector(`.image${parseInt(elImgBtn.id.replace(/\D/g, ''), 10)} img`)
     currImage = elImg
 
     gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * gElCanvas.width
