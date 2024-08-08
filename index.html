@@ -24,13 +24,40 @@
         </header>
 
         <section class="gallery-container">
-            <input type="text" class="gallery-search" placeholder="Find your template" oninput="onSearchGallery(this)"
-                onchange="onAddKeywordsToDisplay(this)">
-            <div class="keyword-display-container">
-                <div class="keyword-display"></div>
+            <div class="modal-overlay"></div>
+
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Find your template.."
+                    oninput="onSearchGallery(this)" onchange="onAddKeywordsToDisplay()">
+                <i class="fa-solid fa-magnifying-glass" onchange="onAddKeywordsToDisplay()"></i>
+                <div class="keyword-display-container">
+                    <div class="keyword-display"></div>
+                </div>
+            </div>
+            <div class="upload-button-container">
+                <label for="upload-button"> <span>Upload Image</span>
+                    <i class="fa-solid fa-upload"></i>
+                </label>
+                <input type="file" class="upload-button" id="upload-button" name="upload-button"
+                    onchange="onImgUpload(event)" accept="image/*" hidden>
+            </div>
+            <div class="find-button-container">
+                <div class="find-button" onclick="showModal()"> <span>Find Image</span>
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
+                </div>
             </div>
             <article class="gallery">
             </article>
+            <div class="find-image-modal-container hidden">
+                <div class="find-image-modal">
+                    <div class="find-image-search">
+                        <input type="text" class="find-image-input" placeholder="Find an image..">
+                        <i class="fa-solid fa-magnifying-glass" onclick="findImage()"></i>
+                    </div>
+                    <div class="image-container"></div>
+                    <div class="add-image" onclick="onAddImage()">Add Image</div>
+                </div>
+            </div>
         </section>
 
 
@@ -41,31 +68,40 @@
             <article class="options-container">
                 <div class="options">
                     <div>
-                        <label for="text"></label>
-                        <input type="text" name="text" id="text" oninput="onAddText(event)"
+                        <input type="text" name="text" id="text" placeholder="Enter text.." oninput="onAddText(event)"
                             onkeydown="onAddText(event)">
                     </div>
-                    <div>
-                        <label for="font-size">Font Size</label>
-                        <input type="range" name="font-size" id="font-size" min="5" max="100" value="40"
-                            oninput="onChangeSettings(); onAddText(event);">
-                        <span class="font-size-counter">40</span>
+                    <i class="fa-solid fa-text-height" onclick="toggleOptionsMenu(this)"></i>
+                    <div class="font-container hidden">
+                        <i class="fa-solid fa-bold" onclick="onChangeSettings(this); onAddText(event);"></i>
+                        <i class="fa-solid fa-italic" onclick="onChangeSettings(this); onAddText(event);"></i>
+                        <i class="fa-solid fa-underline" onclick="onChangeSettings(this); onAddText(event);"></i>
+                        <i class="fa-solid fa-strikethrough" onclick="onChangeSettings(this); onAddText(event);"></i>
+                        <div>
+                            <label for="font-size">Font Size:</label>
+                            <input type="range" name="font-size" id="font-size" min="5" max="100" value="40"
+                                oninput="onChangeSettings(); onAddText(event);">
+                            <span class="font-size-counter">40</span>
+                        </div>
+                        <div>
+                            <label for="stroke-width">Stroke Width:</label>
+                            <input type="range" name="stroke-width" id="stroke-width" min="0" max="10" value="3"
+                                oninput="onChangeSettings(); onAddText(event);">
+                            <span class="stroke-width-counter">3</span>
+                        </div>
                     </div>
-                    <div>
-                        <label for="font-color">Color</label>
-                        <input type="color" name="font-color" id="font-color" value="#000000"
-                            oninput="onChangeSettings(); onAddText(event);">
-                    </div>
-                    <div>
-                        <label for="stroke-color">Border</label>
-                        <input type="color" name="stroke-color" id="stroke-color" value="#000000"
-                            oninput="onChangeSettings(); onAddText(event);">
-                    </div>
-                    <div>
-                        <label for="stroke-width">Border Width</label>
-                        <input type="range" name="stroke-width" id="stroke-width" min="0" max="10" value="3"
-                            oninput="onChangeSettings(); onAddText(event);">
-                        <span class="stroke-width-counter">3</span>
+                    <i class="fa-solid fa-palette" onclick="toggleOptionsMenu(this)"></i>
+                    <div class="color-container hidden">
+                        <div>
+                            <label for="font-color">Font Color</label>
+                            <input type="color" name="font-color" id="font-color" value="#000000"
+                                oninput="onChangeSettings(); onAddText(event);">
+                        </div>
+                        <div>
+                            <label for="stroke-color">Stroke Color</label>
+                            <input type="color" name="stroke-color" id="stroke-color" value="#000000"
+                                oninput="onChangeSettings(); onAddText(event);">
+                        </div>
                     </div>
                 </div>
             </article>
@@ -90,11 +126,14 @@
 
 
 
-
+    <script src="https://kit.fontawesome.com/75cbaaf481.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="JS/util.js"></script>
     <script src="JS/meme.service.js"></script>
     <script src="JS/canvas.service.js"></script>
     <script src="JS/meme.controller.js"></script>
     <script src="JS/canvas.controller.js"></script>
+    <script src="JS/image-search.js"></script>
     <script src="JS/download&save.js"></script>
 
 </body>

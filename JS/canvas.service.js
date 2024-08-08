@@ -6,5 +6,9 @@ const textSettings = {
     strokeColor: '#000000',
     strokeWidth: 3,
     fontType: 'Segoe UI',
+    bold: '',
+    italicize: '',
+    underline: false,
+    strikethrough: false
 }
 

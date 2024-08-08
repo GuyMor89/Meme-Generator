@@ -7,23 +7,26 @@ let currentMeme = null
 
 
 function onInit() {
-    renderGalley()
+    renderGallery()
     renderSavedMemes()
     addListeners()
 }
 
-function renderGalley() {
+function renderGallery() {
     const elGallery = document.querySelector('.gallery')
 
     const injectedHTML = document.querySelectorAll('[data-gallery]')
     injectedHTML.forEach(element => element.remove())
+
+    console.log('hi');
+    
 
     const imageHTML = getImgArray().map(({ id, url }) =>
         `<div class="image image${id}" data-gallery>
         <img src="${url}" id="img${id}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
         </div>`
     )
-
+    
     elGallery.insertAdjacentHTML('beforeend', imageHTML.join(''))
 }
 
@@ -46,7 +49,7 @@ function renderSavedMemes() {
 
 
 function setCurrentMeme(elMeme) {
-    currentMeme = savedMemeArray.find(meme => meme.url === elMeme.src)    
+    currentMeme = savedMemeArray.find(meme => meme.url === elMeme.src)
 
     restoreMemeToEditor(currentMeme)
 
@@ -57,7 +60,7 @@ function setCurrentMeme(elMeme) {
 function restoreMemeToEditor(currentMeme) {
     const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
 
-    coverCanvasWithImg(elSavedMemeImg)    
+    coverCanvasWithImg(elSavedMemeImg)
 
     textArray = currentMeme.lines.map(line => ({ ...line }))
 
@@ -68,17 +71,18 @@ function restoreMemeToEditor(currentMeme) {
 
 function onSearchGallery(element) {
 
-    const elInput = document.querySelector('.gallery-search')
+    const elInput = document.querySelector('.search-input')
 
     if (element.tagName === 'INPUT') filterBy.keyword = element.value
     if (element.tagName === 'DIV') elInput.value = filterBy.keyword = element.innerText
 
-    renderGalley()
+    renderGallery()
 }
 
 
-function onAddKeywordsToDisplay(elInput) {
+function onAddKeywordsToDisplay() {
     const keywordDisplay = document.querySelector('.keyword-display')
+    const elInput = document.querySelector('.search-input')
     const keyword = elInput.value
 
     keywordsToDisplay.push({ keyword, size: 16 })
@@ -105,6 +109,31 @@ function changeKeywordSize(elKeyword) {
     elKeyword.style.fontSize = `${keywordsToDisplay[keywordID].size}px`
 }
 
+function showModal() {
+    const modalOverlay = document.querySelector('.modal-overlay')
+    const modal = document.querySelector('.find-image-modal-container')
+
+    modal.classList.remove('hidden')
+    modalOverlay.classList.add('overlay-on')
+}
+
+function onAddImage() {
+    const modalOverlay = document.querySelector('.modal-overlay')
+    const modal = document.querySelector('.find-image-modal-container')
+    const findInput = document.querySelector('.find-image-input')
+    const imageContainer = document.querySelector('.image-container')
+
+    if (image.src) addImage()
+
+    image.src = ''
+    findInput.value = ''
+    imageContainer.innerHTML = ''
+    modal.classList.add('hidden')
+    modalOverlay.classList.remove('overlay-on')
+
+    renderGallery()
+}
+
 
 
 
@@ -129,5 +158,27 @@ function onSwitchPages(element) {
         savedContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         galleryContainer.classList.add('disappear')
+    }
+}
+
+function toggleOptionsMenu(elIcon) {
+    const fontContainer = document.querySelector('.font-container')
+    const colorContainer = document.querySelector('.color-container')
+    
+    if (elIcon.classList.contains('fa-text-height')) {
+        if (fontContainer.classList.contains('hidden')) {
+            fontContainer.classList.remove('hidden')
+            colorContainer.classList.add('hidden')
+        } else {
+            fontContainer.classList.add('hidden')
+        }
+    }
+    if (elIcon.classList.contains('fa-palette')) {
+        if (colorContainer.classList.contains('hidden')) {
+            colorContainer.classList.remove('hidden')
+            fontContainer.classList.add('hidden')
+        } else {
+            colorContainer.classList.add('hidden')
+        }
     }
 }
