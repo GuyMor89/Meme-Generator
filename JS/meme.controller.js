@@ -68,6 +68,8 @@ function restoreMemeToEditor(currentMeme) {
     const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
 
     coverCanvasWithImg(elSavedMemeImg)
+    
+    currentMeme = savedMemeArray.find(meme => meme.imgID === elImg.id)
 
     textArray = currentMeme.lines.map(line => ({ ...line }))
 
