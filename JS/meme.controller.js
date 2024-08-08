@@ -68,8 +68,11 @@ function restoreMemeToEditor(currentMeme) {
     const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
 
     coverCanvasWithImg(elSavedMemeImg)
+<<<<<<< HEAD
     
     console.log();
+=======
+>>>>>>> 054f3f567edc9c41cb50314342a193dbcbff96bd
     
     
     currentMeme = savedMemeArray.find(meme => meme.imgID === elImg.id)
