@@ -69,7 +69,6 @@ function restoreMemeToEditor(currentMeme) {
 
     coverCanvasWithImg(elSavedMemeImg)
     
-    console.log();
     
     
     currentMeme = savedMemeArray.find(meme => meme.imgID === elImg.id)
