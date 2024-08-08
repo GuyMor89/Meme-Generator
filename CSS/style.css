@@ -295,7 +295,7 @@ header {
 .find-image-search input {
     padding-block: 0.25em;
     padding-inline-start: 0.5em;
-    
+
     font-size: 1.25em;
 
     border: 2px solid rgba(0, 0, 0, 0.233);
@@ -369,13 +369,68 @@ header {
 
 }
 
-.gallery img {
+.gallery>div {
+    position: relative;
+}
+
+.gallery>div img {
     width: 100%;
 
     border-radius: 5px;
 
     cursor: pointer;
 }
+
+
+
+.image-button-container-overlay {
+    position: absolute;
+    height: 99%;
+    width: 100%;
+
+    top: 0;
+    left: 0;
+
+    display: grid;
+
+    place-items: center;
+    pointer-events: none;
+
+    background-color: rgba(211, 211, 211, 0.153);
+
+    transition: opacity 300ms, visibility 300ms
+}
+
+.image-button-container {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 0.5em;
+
+    height: fit-content;
+    width: fit-content;
+}
+
+.use-button,
+.delete-button {
+    padding: 0.25em;
+
+    font-size: 3em;
+
+    cursor: pointer;
+    pointer-events:all;
+    background-color: #e8e8e869;
+
+    border: 2px solid rgba(0, 0, 0, 0.211);
+    border-radius: 5px;
+
+    transition: background-color 300ms;
+}
+
+.use-button:hover,
+.delete-button:hover {
+    background-color: #e8e8e893;
+}
+
 
 
 

@@ -40,7 +40,8 @@ function getEventPos(event) {
 }
 
 
-function coverCanvasWithImg(elImg) {
+function coverCanvasWithImg(elImgBtn) {
+    const elImg = document.querySelector(`.image${elImgBtn.id} img`)
     currImage = elImg
 
     gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * gElCanvas.width

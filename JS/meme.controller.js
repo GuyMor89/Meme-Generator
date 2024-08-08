@@ -18,15 +18,22 @@ function renderGallery() {
     const injectedHTML = document.querySelectorAll('[data-gallery]')
     injectedHTML.forEach(element => element.remove())
 
-    console.log('hi');
-    
-
     const imageHTML = getImgArray().map(({ id, url }) =>
         `<div class="image image${id}" data-gallery>
-        <img src="${url}" id="img${id}" onclick="coverCanvasWithImg(this); onSwitchPages(this);">
+        <img src="${url}" id="img${id}" onclick="onOpenImageMenu(this)">
+        <div class="image-button-container-overlay hidden" id="overlay${id}">
+        <div class="image-button-container">
+        <div class="use-button" id="use${id}" onclick="coverCanvasWithImg(this); onclick="onSwitchPages(this);">
+        <i class="fa-solid fa-check" ></i>
+        </div>
+        <div class="delete-button" id=btn${id} onclick="onDeleteImage()">
+        <i class="fa-solid fa-trash-can" onclick="onDeleteImage(this)"></i>
+        </div>
+        </div>
+        </div>
         </div>`
     )
-    
+
     elGallery.insertAdjacentHTML('beforeend', imageHTML.join(''))
 }
 
@@ -49,7 +56,7 @@ function renderSavedMemes() {
 
 
 function setCurrentMeme(elMeme) {
-    currentMeme = savedMemeArray.find(meme => meme.url === elMeme.src)
+    currentMeme = getMemeArray().find(meme => meme.url === elMeme.src)
 
     restoreMemeToEditor(currentMeme)
 
@@ -134,7 +141,28 @@ function onAddImage() {
     renderGallery()
 }
 
+function onUploadImage(event) {
+    loadImageFromInput(event, addImage)
 
+    setTimeout(() => {
+        renderGallery()
+    }, 500);
+}
+
+function loadImageFromInput(ev, addImage) {
+    const reader = new FileReader()
+    reader.onload = function (event) {
+        let elImg = new Image()
+        elImg.src = event.target.result
+        elImg.onload = () => addImage(elImg.src)
+    }
+    reader.readAsDataURL(ev.target.files[0])
+}
+
+
+function onDeleteImage(elDeleteBtn) {
+
+}
 
 
 
@@ -142,14 +170,14 @@ function onAddImage() {
 function onSwitchPages(element) {
     const galleryContainer = document.querySelector('.gallery-container')
     const editorContainer = document.querySelector('.editor-container')
-    const savedContainer = document.querySelector('.saved-memes-container')
+    const savedContainer = document.querySelector('.saved-memes-container')    
 
     if (element.innerText === 'Gallery' || element.innerText === 'MemeMaster') {
         galleryContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
     }
-    if (element.innerText === 'Editor' || element.nodeName === 'IMG') {
+    if (element.innerText === 'Editor' || element.classList.contains('use-button')) {
         editorContainer.classList.remove('disappear')
         galleryContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
@@ -164,7 +192,7 @@ function onSwitchPages(element) {
 function toggleOptionsMenu(elIcon) {
     const fontContainer = document.querySelector('.font-container')
     const colorContainer = document.querySelector('.color-container')
-    
+
     if (elIcon.classList.contains('fa-text-height')) {
         if (fontContainer.classList.contains('hidden')) {
             fontContainer.classList.remove('hidden')
@@ -181,4 +209,15 @@ function toggleOptionsMenu(elIcon) {
             colorContainer.classList.add('hidden')
         }
     }
+}
+
+
+function onOpenImageMenu(elImg) {
+    const imageButtonMenu = document.getElementById(`overlay${parseInt(elImg.id.replace(/\D/g, ''), 10)}`)
+
+    if (imageButtonMenu.classList.contains('hidden')) {
+        imageButtonMenu.classList.remove('hidden')
+    } else {
+        imageButtonMenu.classList.add('hidden')
+    }    
 }

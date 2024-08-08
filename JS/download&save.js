@@ -11,20 +11,7 @@ function onCreateDownloadLink(elLink) {
 
 
 function onSaveMeme() {    
-    let memeToSave = 
-        {
-            imgID: currImage.id.replace('img', ''),
-            url: convertCanvasToImage(),
-            lines: [...textArray]
-        }  
-
-    const memeID = savedMemeArray.findIndex(meme => meme.url === memeToSave.url)
-
-    if (memeID !== -1) {
-        savedMemeArray[memeID] = {...savedMemeArray[memeID], ...memeToSave}
-    } else {
-        savedMemeArray.push(memeToSave)
-    }
+    saveMeme()
 
     textArray.length = 0
     textToEdit = null
