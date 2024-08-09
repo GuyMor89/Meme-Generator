@@ -2,7 +2,9 @@
 
 
 let filterBy = { keyword: '' }
-let keywordsToDisplay = []
+var pageBy = { page: 0, amount: 6, total: 0 }
+
+let keywordsToDisplay = [{ keyword: 'funny', size: 16 }, { keyword: 'cool', size: 20 }, { keyword: 'cute', size: 25 }, { keyword: 'amazing', size: 16 }, { keyword: 'hilarious', size: 19 }]
 let currentMeme = null
 
 
@@ -10,6 +12,8 @@ function onInit() {
     renderGallery()
     renderSavedMemes()
     addListeners()
+    renderPageNumbers()
+    onAddKeywordsToDisplay()
 }
 
 function renderGallery() {
@@ -23,10 +27,10 @@ function renderGallery() {
         <img src="${url}" id="img${id}" onclick="onOpenImageMenu(event, this)">
         <div class="image-button-container-overlay hidden" id="overlay${id}">
         <div class="image-button-container">
-        <div class="use-button" id="use${id}" onclick="coverCanvasWithImg(this); onSwitchPages(this); onOpenImageMenu(event, this)">
+        <div class="use-button" id="use${id}" onclick="coverCanvasWithImg(this); onSwitchTabs(this); onOpenImageMenu(event, this)">
         <i class="fa-solid fa-check" ></i>
         </div>
-        <div class="delete-button" id="btn${id}" onclick="onDeleteImage(this); onOpenImageMenu(event, this);">
+        <div class="delete-button" id="btn${id}" onclick="onDeleteImage(this)">
         <i class="fa-solid fa-trash-can"></i>
         </div>
         </div>
@@ -47,7 +51,7 @@ function renderSavedMemes() {
 
     const memeHTML = getMemeArray().map(({ id, url, imgID }) =>
         `<div class="saved saved${id}" data-saved>
-        <img src="${url}" id="meme${imgID}" class="saved" onclick="setCurrentMeme(this); onSwitchPages(this)">
+        <img src="${url}" id="meme${imgID}" class="saved" onclick="setCurrentMeme(this); onSwitchTabs(this)">
         </div>`
     )
 
@@ -124,6 +128,15 @@ function showModal() {
     modalOverlay.classList.add('overlay-on')
 }
 
+function closeModal() {
+    const modalOverlay = document.querySelector('.modal-overlay')
+    const modal = document.querySelector('.find-image-modal-container')
+
+    modal.classList.add('hidden')
+    modalOverlay.classList.remove('overlay-on')
+}
+
+
 function onAddImage() {
     const modalOverlay = document.querySelector('.modal-overlay')
     const modal = document.querySelector('.find-image-modal-container')
@@ -143,19 +156,28 @@ function onAddImage() {
 
 
 function onDownloadImage() {
-
     if (!image.src) return
 
-    const imageUrl = image.src; // Replace with your image URL
+    fetch(image.src)
+        .then(response => response.blob())
+        .then(blob => {
+            // Create a new object URL for the blob object
+            const url = window.URL.createObjectURL(blob)
 
-    // Create a temporary <a> element with a download attribute
-    const a = document.createElement('a');
-    a.href = imageUrl;
-    a.download = 'image.jpg'; // Name of the saved file
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+            // Create a temporary <a> element with a download attribute
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'image.jpg' // Name of the saved file
+            document.body.appendChild(a)
+            a.click()
+
+            // Clean up by revoking the object URL and removing the <a> element
+            a.remove()
+            window.URL.revokeObjectURL(url)
+        })
+        .catch(error => console.error('Error downloading the image:', error))
 }
+
 
 
 function onUploadImage(event) {
@@ -163,6 +185,7 @@ function onUploadImage(event) {
 
     setTimeout(() => {
         renderGallery()
+        renderPageNumbers()
     }, 500)
 }
 
@@ -179,25 +202,30 @@ function loadImageFromInput(ev, addImage) {
 
 
 function onDeleteImage(elDeleteBtn) {
+
     const elImg = document.querySelector(`.image${parseInt(elDeleteBtn.id.replace(/\D/g, ''), 10)} img`)
-    console.log(elImg.src);
 
-    const ImgIDToDelete = getImgArray().findIndex(img => img.url === elImg.src)
+    const ImgIDToDelete = getImgArray().findIndex(img => img.id === parseInt(elImg.id.replace(/\D/g, ''), 10))
 
-    console.log(ImgIDToDelete);
+    deleteImage(ImgIDToDelete)
 
-
+    setTimeout(() => {
+        getImgArray()
+        pageBy.page = Math.ceil(pageBy.total / pageBy.amount) - 1
+        renderGallery()
+        renderPageNumbers()
+    }, 500);
 }
 
 
 
 
-function onSwitchPages(element) {
+function onSwitchTabs(element) {
     const galleryContainer = document.querySelector('.gallery-container')
     const editorContainer = document.querySelector('.editor-container')
     const savedContainer = document.querySelector('.saved-memes-container')
 
-    if (element.innerText === 'Gallery' || element.innerText === 'MemeMaster') {
+    if (element.innerText === 'Gallery' || element.innerText.includes('FreshMeme')) {
         galleryContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
@@ -268,4 +296,55 @@ function onOpenImageMenu(event, elImg) {
     })
 
     imageButtonMenu.classList.remove('hidden')
+}
+
+
+
+function onChangePage(direction, value) {
+    const pageAmount = Math.ceil(pageBy.total / pageBy.amount) - 1
+
+    if (direction === 'up') {
+        if (pageBy.page === pageAmount) {
+            pageBy.page = 0
+        } else {
+            pageBy.page += +value
+        }
+    }
+    if (direction === 'down') {
+        if (pageBy.page === 0) {
+            pageBy.page = pageAmount
+        } else {
+            pageBy.page += +value
+        }
+    }
+    renderGallery()
+    renderPageNumbers()
+}
+
+function renderPageNumbers() {
+    const previousPage = document.querySelector('.pagePrev')
+    const currentPage = document.querySelector('.pageCurr')
+    const nextPage = document.querySelector('.pageNext')
+
+    const pageAmount = Math.ceil(pageBy.total / pageBy.amount) - 1
+
+    currentPage.innerText = pageBy.page
+
+    if (+currentPage.innerText === 0) {
+        previousPage.innerText = pageAmount
+    } else {
+        previousPage.innerText = currentPage.innerText - 1
+    }
+    if (+currentPage.innerText === pageAmount) {
+        nextPage.innerText = 0
+    } else {
+        nextPage.innerText = +currentPage.innerText + 1
+    }
+}
+
+function onChangePageNums(elBtn) {
+    pageBy.page = +elBtn.innerText
+
+    renderGallery()
+    renderPageNumbers()
 }

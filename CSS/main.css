@@ -1,0 +1,37 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+@media (width < 1140px) { 
+
+    .sub-header {
+        width: 834px;
+    }
+
+    .gallery-container {
+        width: 800.5px;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+}
+
+@media (width < 930px) { 
+
+    .sub-header {
+        width: 634px;
+    }
+
+    .gallery-container {
+        width: 600px;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(6, 1fr);
+    }
+}

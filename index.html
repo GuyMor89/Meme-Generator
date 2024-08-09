@@ -6,122 +6,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MemeMaster</title>
     <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/main.css">
 </head>
 
 <body onload="onInit()">
 
-    <main class="main-container">
-        <div class="modal-overlay"></div>
+    <div class="container-container">
+        <main class="main-container">
+            <div class="modal-overlay" onclick="closeModal()"></div>
 
-        <header>
-            <div class="sub-header">
-                <div class="logo" onclick="onSwitchPages(this)">MemeMaster</div>
-                <article class="nav-container">
-                    <div class="gallery-button" onclick="onSwitchPages(this)">Gallery</div>
-                    <div class="editor-button" onclick="onSwitchPages(this)">Editor</div>
-                    <div class="saved-button" onclick="onSwitchPages(this)">Saved</div>
+            <header>
+                <div class="sub-header">
+                    <div class="logo" onclick="onSwitchTabs(this)">FreshMeme <i class="fas fa-leaf"
+                            style="color: #33c751;"></i>
+                    </div>
+                    <article class="nav-container">
+                        <div class="gallery-button" onclick="onSwitchTabs(this)">Gallery</div>
+                        <div class="editor-button" onclick="onSwitchTabs(this)">Editor</div>
+                        <div class="saved-button" onclick="onSwitchTabs(this)">Saved</div>
+                    </article>
+                </div>
+            </header>
+
+            <section class="gallery-container">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Find your template.."
+                        oninput="onSearchGallery(this)" onchange="onAddKeywordsToDisplay()">
+                    <i class="fa-solid fa-magnifying-glass" onchange="onAddKeywordsToDisplay()"></i>
+                    <div class="keyword-display-container">
+                        <div class="keyword-display"></div>
+                    </div>
+                </div>
+                <div class="upload-button-container">
+                    <label for="upload-button"><span>Upload Image</span>
+                        <i class="fa-solid fa-upload"></i>
+                    </label>
+                    <input type="file" class="upload-button" id="upload-button" name="upload-button"
+                        onchange="onUploadImage(event)" accept="image/*" hidden>
+                </div>
+                <div class="find-button-container">
+                    <div class="find-button" onclick="showModal()"><span>Find Image</span>
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                    </div>
+                </div>
+                <article class="gallery">
                 </article>
-            </div>
-        </header>
-
-        <section class="gallery-container">
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Find your template.."
-                    oninput="onSearchGallery(this)" onchange="onAddKeywordsToDisplay()">
-                <i class="fa-solid fa-magnifying-glass" onchange="onAddKeywordsToDisplay()"></i>
-                <div class="keyword-display-container">
-                    <div class="keyword-display"></div>
-                </div>
-            </div>
-            <div class="upload-button-container">
-                <label for="upload-button"><span>Upload Image</span>
-                    <i class="fa-solid fa-upload"></i>
-                </label>
-                <input type="file" class="upload-button" id="upload-button" name="upload-button"
-                    onchange="onUploadImage(event)" accept="image/*" hidden>
-            </div>
-            <div class="find-button-container">
-                <div class="find-button" onclick="showModal()"><span>Find Image</span>
-                    <i class="fa-solid fa-cloud-arrow-down"></i>
-                </div>
-            </div>
-            <article class="gallery">
-            </article>
-            <div class="find-image-modal-container hidden">
-                <div class="find-image-modal">
-                    <div class="find-image-search">
-                        <input type="text" class="find-image-input" placeholder="Find an image..">
-                        <i class="fa-solid fa-magnifying-glass" onclick="findImage()"></i>
-                    </div>
-                    <div class="image-container"></div>
-                    <div class="add-image" onclick="onDownloadImage()">Download Image</div>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="editor-container disappear">
-            <div class="canvas-container">
-                <canvas width="500px" height="500px"></canvas>
-            </div>
-            <article class="options-container">
-                <div class="options">
-                    <div>
-                        <input type="text" name="text" id="text" placeholder="Enter text.." oninput="onAddText(event)"
-                            onkeydown="onAddText(event)">
-                    </div>
-                    <i class="fa-solid fa-text-height" onclick="toggleOptionsMenu(this)"></i>
-                    <div class="font-container hidden">
-                        <i class="fa-solid fa-bold" onclick="onChangeSettings(this); onAddText(event);"></i>
-                        <i class="fa-solid fa-italic" onclick="onChangeSettings(this); onAddText(event);"></i>
-                        <i class="fa-solid fa-underline" onclick="onChangeSettings(this); onAddText(event);"></i>
-                        <i class="fa-solid fa-strikethrough" onclick="onChangeSettings(this); onAddText(event);"></i>
-                        <div>
-                            <label for="font-size">Font Size:</label>
-                            <input type="range" name="font-size" id="font-size" min="5" max="100" value="40"
-                                oninput="onChangeSettings(); onAddText(event);">
-                            <span class="font-size-counter">40</span>
+                <div class="find-image-modal-container hidden">
+                    <div class="find-image-modal">
+                        <div class="find-image-search">
+                            <i class="fa-solid fa-xmark close-button" onclick="closeModal()"></i>
+                            <input type="text" class="find-image-input" placeholder="Find an image..">
+                            <i class="fa-solid fa-magnifying-glass" onclick="findImage()"></i>
                         </div>
-                        <div>
-                            <label for="stroke-width">Stroke Width:</label>
-                            <input type="range" name="stroke-width" id="stroke-width" min="0" max="10" value="3"
-                                oninput="onChangeSettings(); onAddText(event);">
-                            <span class="stroke-width-counter">3</span>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-palette" onclick="toggleOptionsMenu(this)"></i>
-                    <div class="color-container hidden">
-                        <div>
-                            <label for="font-color">Font Color</label>
-                            <input type="color" name="font-color" id="font-color" value="#000000"
-                                oninput="onChangeSettings(); onAddText(event);">
-                        </div>
-                        <div>
-                            <label for="stroke-color">Stroke Color</label>
-                            <input type="color" name="stroke-color" id="stroke-color" value="#000000"
-                                oninput="onChangeSettings(); onAddText(event);">
-                        </div>
+                        <div class="image-container"></div>
+                        <div class="download-image" onclick="onDownloadImage()">Download Image</div>
                     </div>
                 </div>
-            </article>
 
-            <article class="download-container">
-                <div class="download-button-container">
-                    <a href="#" class="download-button" onclick="onCreateDownloadLink(this)"
-                        download="my-img.jpg">Download Meme</a>
-                    <a href="#" class="share-button" onclick="onCreateShareLink()">Share Meme</a>
-                    <a href="#" class="save-button" onclick="onSaveMeme()">Save Meme</a>
+                <div class="page-container">
+                    <div class="page next-page" onclick="onChangePage('up', 1)">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <div class="page pagePrev" onclick="onChangePageNums(this)"></div>
+                    <div class="page pageCurr" onclick="onChangePageNums(this)"></div>
+                    <div class="page pageNext" onclick="onChangePageNums(this)"></div>
+                    <div class="page prev-page" onclick="onChangePage('down', -1)">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </div>
                 </div>
-            </article>
-        </section>
 
-        <section class="saved-memes-container disappear">
-            <article class="saved-memes"></article>
-        </section>
+            </section>
 
-        <!-- <footer></footer> -->
 
-    </main>
+            <section class="editor-container disappear">
+                <div class="canvas-container">
+                    <canvas width="500px" height="500px"></canvas>
+                </div>
+                <article class="options-container">
+                    <div class="options">
+                        <div>
+                            <input type="text" name="text" id="text" placeholder="Enter text.."
+                                oninput="onAddText(event)" onkeydown="onAddText(event)">
+                        </div>
+                        <i class="fa-solid fa-text-height" onclick="toggleOptionsMenu(this)"></i>
+                        <div class="font-container">
+                            <i class="fa-solid fa-bold" onclick="onChangeSettings(this); onAddText(event);"></i>
+                            <i class="fa-solid fa-italic" onclick="onChangeSettings(this); onAddText(event);"></i>
+                            <i class="fa-solid fa-underline" onclick="onChangeSettings(this); onAddText(event);"></i>
+                            <i class="fa-solid fa-strikethrough"
+                                onclick="onChangeSettings(this); onAddText(event);"></i>
+                            <div>
+                                <label for="font-size">Font Size:</label>
+                                <input type="range" name="font-size" id="font-size" min="5" max="100" value="40"
+                                    oninput="onChangeSettings(); onAddText(event);">
+                                <span class="font-size-counter">40</span>
+                            </div>
+                            <div>
+                                <label for="stroke-width">Stroke Width:</label>
+                                <input type="range" name="stroke-width" id="stroke-width" min="0" max="10" value="3"
+                                    oninput="onChangeSettings(); onAddText(event);">
+                                <span class="stroke-width-counter">3</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-palette" onclick="toggleOptionsMenu(this)"></i>
+                        <div class="color-container hidden">
+                            <div>
+                                <label for="font-color">Font Color</label>
+                                <input type="color" name="font-color" id="font-color" value="#000000"
+                                    oninput="onChangeSettings(); onAddText(event);">
+                            </div>
+                            <div>
+                                <label for="stroke-color">Stroke Color</label>
+                                <input type="color" name="stroke-color" id="stroke-color" value="#000000"
+                                    oninput="onChangeSettings(); onAddText(event);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <article class="download-container">
+                        <div class="download-button-container">
+                            <a href="#" class="download-button" onclick="onCreateDownloadLink(this)"
+                                download="my-img.jpg">Download Meme<i class="fa-solid fa-download"></i></a>
+                            <a href="#" class="share-button" onclick="onCreateShareLink()">Share Meme<i
+                                    class="fa-solid fa-share-from-square"></i></a>
+                            <a href="#" class="save-button" onclick="onSaveMeme()">Save Meme<i
+                                    class="fa-solid fa-floppy-disk"></i></a>
+                        </div>
+                    </article>
+
+                </article>
+            </section>
+
+            <section class="saved-memes-container disappear">
+                <article class="saved-memes"></article>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>Copyright
+        <i class="fa-regular fa-copyright"></i>
+        2024<span>by Guy Mor</span>
+    </footer>
 
 
 

@@ -1,16 +1,39 @@
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+
+
+@font-face {
+    font-family: Lato-Regular;
+    src: url(fonts/Lato-Regular.ttf);
+}
+
+@font-face {
+    font-family: Eurofurencer;
+    src: url(fonts/Eurofurencer-Regular.ttf);
+}
+
+@font-face {
+    font-family: Noto-Regular;
+    src: url(fonts/Noto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Edu-Regular;
+    src: url(fonts/Edu.ttf);
+}
+
+@font-face {
+    font-family: Playwrite-Regular;
+    src: url(fonts/Playwrite.ttf);
 }
 
 html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+    font-family: 'Lato-Regular', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
+    height: 100%;
     margin: 0;
-    background-color: rgba(242, 242, 242, 0.29);
+    background-color: rgb(250, 250, 250);
 }
 
 
@@ -23,6 +46,10 @@ body {
     opacity: 0;
 }
 
+
+.container-container {
+    min-height: calc(100vh - 2.5em);
+}
 
 
 .main-container {
@@ -44,7 +71,10 @@ header {
 
     grid-template-columns: subgrid;
 
-    background-color: #e8e8e8;
+    background-color: rgb(217, 217, 225);
+
+    box-shadow:
+        0px 1px 5px 0px rgba(0, 0, 0, 0.35);
 }
 
 .sub-header {
@@ -62,21 +92,26 @@ header {
     padding-block: 0.1em;
     padding-inline: 0.4em;
 
-    font-size: 2em;
+    font-size: 3em;
     font-weight: 500;
 
-    /* border: 1px solid rgba(0, 0, 0, 0.205); */
-    border-radius: 5px;
+    font-family: Eurofurencer;
+    font-weight: 800;
 
     justify-self: start;
     align-self: center;
 
     cursor: pointer;
+
+    transition: text-shadow 500ms;
+}
+
+.logo:hover {
+    text-shadow: 4px 4px 0px rgb(255, 255, 255);
+
 }
 
 .nav-container {
-    /* margin-block: 1em; */
-
     display: grid;
     grid-auto-flow: column;
 
@@ -85,11 +120,11 @@ header {
 
 .nav-container>div {
     padding-inline: 1em;
-    padding-block: 0.5em;
+    padding-block: 0.75em;
 
     font-size: 1.5em;
-    /* border: 1px solid rgba(0, 0, 0, 0.205); */
-    /* border-radius: 5px; */
+
+    height: fit-content;
 
     cursor: pointer;
 
@@ -97,7 +132,28 @@ header {
 }
 
 .nav-container>div:hover {
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(245, 245, 245);
+}
+
+.nav-container>div:first-of-type {
+    line-height: 1;
+    font-family: Playwrite-Regular;
+}
+
+.nav-container>div:nth-of-type(2) {
+    padding-block-start: 0.85em;
+
+    line-height: 1;
+    font-family: Edu-Regular;
+    font-weight: 400;
+}
+
+.nav-container>div:nth-of-type(3) {
+    padding-block-start: 0.9em;
+
+    line-height: 1;
+    font-family: Lato-Regular;
+    font-weight: 700;
 }
 
 
@@ -108,19 +164,16 @@ header {
     padding: 0.75em;
     margin-inline: 0.75em;
     margin-block-end: 1em;
-
     grid-column: 2;
-
     width: 1010.5px;
-
     display: grid;
     justify-items: center;
-
     grid-template-columns: 1fr 1fr;
-
-    background-color: white;
+    background-color: rgb(250, 250, 250);
     border: 2px solid rgba(0, 0, 0, 0.258);
     border-radius: 5px;
+    box-shadow:
+    1px 1px 5px 0px rgba(0, 0, 0, 0.1);
 }
 
 .search-container {
@@ -169,6 +222,9 @@ header {
     transition: background-color 300ms;
 
     cursor: pointer;
+
+    box-shadow:
+    1px 1px 5px 0px rgba(0, 0, 0, 0.1);
 }
 
 .search-container i:hover {
@@ -210,6 +266,9 @@ header {
 
     border: 2px solid rgba(0, 0, 0, 0.211);
     border-radius: 5px;
+
+    box-shadow:
+    1px 1px 5px 0px rgba(0, 0, 0, 0.1);
 }
 
 .upload-button-container label,
@@ -238,7 +297,7 @@ header {
 
 .upload-button-container i,
 .find-button-container i {
-    font-size: 3em;
+    font-size: 2.25em;
 }
 
 
@@ -291,11 +350,16 @@ header {
     margin-block-start: 1em;
 
     height: fit-content;
+    width: 100%;
+
+    display: grid;
+    grid-auto-flow: column;
 
     align-self: start;
 }
 
 .find-image-search input {
+    margin-inline-end: 0.5em;
     padding-block: 0.25em;
     padding-inline-start: 0.5em;
 
@@ -312,10 +376,20 @@ header {
     border: 2px solid rgba(0, 0, 0, 0.211);
     border-radius: 5px;
 
+    width: fit-content;
+
     transition: background-color 300ms;
 
     cursor: pointer;
 
+}
+
+.find-image-search .close-button {
+    margin-inline-start: 1em;
+    margin-inline-end: 0.5em;
+    font-size: 1.5em;
+    padding: 0.3em;
+    justify-self: start;
 }
 
 .find-image-search i:hover {
@@ -337,7 +411,8 @@ header {
     width: 100%;
 }
 
-.add-image {
+.download-image {
+    margin-block-end: 0.5em;
     padding-block: 0.25em;
     padding-inline: 0.5em;
 
@@ -350,7 +425,7 @@ header {
     cursor: pointer;
 }
 
-.add-image:hover {
+.download-image:hover {
     background-color: #e8e8e893;
 }
 
@@ -365,7 +440,8 @@ header {
 .gallery {
     grid-column: 1 / -1;
     display: grid;
-    column-gap: 5px;
+    column-gap: 10px;
+    row-gap: 5px;
 
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -380,6 +456,9 @@ header {
     width: 100%;
 
     border-radius: 5px;
+
+    box-shadow:
+    2px 2px 5px 0px rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
 }
@@ -420,7 +499,7 @@ header {
     font-size: 3em;
 
     cursor: pointer;
-    pointer-events:all;
+    pointer-events: all;
     background-color: #e8e8e869;
 
     border: 2px solid rgba(0, 0, 0, 0.211);
@@ -432,6 +511,89 @@ header {
 .use-button:hover,
 .delete-button:hover {
     background-color: #e8e8e893;
+}
+
+
+
+.page-container {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+        "prev one two three next";
+
+    width: fit-content;
+    height: fit-content;
+
+    gap: 0px;
+    justify-items: center;
+}
+
+.page {
+    margin-block-start: 15px;
+    cursor: pointer;
+}
+
+.pagePrev,
+.pageCurr,
+.pageNext {
+    margin-block-start: 0.62em;
+    height: 40px;
+    width: 40px;
+
+    background-color: rgba(0, 0, 0, 0.055);
+    border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.256);
+
+    text-align: center;
+    font-size: 1.8em;
+
+    transition: background-color 300ms;
+
+    box-shadow:
+    1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.page i {
+    padding: 0.25em;
+    padding-inline: 0.4em;
+    border-radius: 5px;
+
+    font-size: 2em;
+
+    transition: background-color 300ms;
+}
+
+
+.next-page {
+    grid-area: next;
+}
+
+.prev-page {
+    grid-area: prev;
+}
+
+.pagePrev {
+    grid-area: one;
+}
+
+.pageCurr {
+    grid-area: two;
+    background-color: rgb(255, 255, 255);
+}
+
+.pageNext {
+    grid-area: three;
+}
+
+
+.pagePrev:hover,
+.pageCurr:hover,
+.pageNext:hover,
+.page i:hover {
+    background-color: #d7d7d7bf;
 }
 
 
@@ -507,7 +669,7 @@ canvas {
 
 .options i {
     padding: 0.25em;
-    margin-block: 0.1em;
+    margin-block: 0.2em;
 
     justify-self: center;
 
@@ -655,12 +817,6 @@ canvas {
 
 
 
-
-
-
-
-
-
 input[type="range"] {
     padding: 0;
     margin: 0.8em;
@@ -728,6 +884,7 @@ input[type="range"]::-webkit-slider-thumb {
     grid-auto-flow: column;
 
     justify-items: center;
+    align-self: self-end;
 }
 
 .download-button-container {
@@ -737,22 +894,38 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .download-button-container>a {
-    padding-inline: 5px;
-    padding-block: 2px;
+    padding-inline: 10px;
+    padding-block: 10px;
 
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 1.25em;
     color: inherit;
     background-color: white;
     border: 1px solid rgb(201, 201, 201);
     border-radius: 5px;
+    text-align: center;
+    
+    height: fit-content;
+
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    gap: 0.5em;
 
     transition: background-color 300ms;
 }
 
 .download-button-container>a:hover {
-    background-color: rgba(0, 0, 0, 0.034);
+    background-color: rgba(0, 0, 0, 0.054);
 }
+
+.download-button-container>a>i {
+    font-size: 1.5em;
+}
+
+
+
+
 
 
 .saved-memes-container {
@@ -791,12 +964,30 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    padding-block-start: 0.5em;
 
-    height: 3em;
+    height: 2.3em;
+    width: 100%;
 
-    background-color: #e8e8e8;
+    font-size: 1.1em;
+    font-family: Lato-Regular;
+    line-height: 1;
+    font-weight: 600;
+
+    background-color: rgb(217, 217, 225);
+    text-align: center;
+
+}
+
+footer i {
+    font-size: 1.3em;
+    line-height: 1;
+}
+
+footer span {
+    margin-inline-start: 1em;
+
+    font-family: Edu-Regular;
+    line-height: 1;
+    font-weight: 300;
 }
