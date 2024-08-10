@@ -3,6 +3,7 @@
 
 let filterBy = { keyword: '' }
 var pageBy = { page: 0, amount: 6, total: 0 }
+var memePageBy = { page: 0, amount: 6, total: 0 }
 
 let keywordsToDisplay = [{ keyword: 'funny', size: 16 }, { keyword: 'cool', size: 20 }, { keyword: 'cute', size: 25 }, { keyword: 'amazing', size: 16 }, { keyword: 'hilarious', size: 19 }]
 let currentMeme = null
@@ -13,6 +14,7 @@ function onInit() {
     renderSavedMemes()
     addListeners()
     renderPageNumbers()
+    renderMemePageNumbers()
     onAddKeywordsToDisplay()
 }
 
@@ -51,7 +53,17 @@ function renderSavedMemes() {
 
     const memeHTML = getMemeArray().map(({ id, url, imgID }) =>
         `<div class="saved saved${id}" data-saved>
-        <img src="${url}" id="meme${imgID}" class="saved" onclick="setCurrentMeme(this); onSwitchTabs(this)">
+        <img src="${url}" id="meme${imgID}" class="saved${id}" onclick="onOpenMemeMenu(event, this)">
+        <div class="image-button-container-overlay hidden" id="overlay-meme${id}">
+        <div class="image-button-container">
+        <div class="btn${id} use-button" id="use-meme${id}" onclick="onSetCurrentMeme(this); onSwitchTabs(this); onOpenMemeMenu(event, this)">
+        <i class="fa-solid fa-check" ></i>
+        </div>
+        <div class="delete-button" id="btn-meme${id}" onclick="onDeleteMeme(this)">
+        <i class="fa-solid fa-trash-can"></i>
+        </div>
+        </div>
+        </div>
         </div>`
     )
 
@@ -59,8 +71,10 @@ function renderSavedMemes() {
 }
 
 
-function setCurrentMeme(elMeme) {
-    currentMeme = getMemeArray().find(meme => meme.url === elMeme.src)
+function onSetCurrentMeme(elMemeBtn) {
+    const elMemeID = parseInt(elMemeBtn.id.replace(/\D/g, ''), 10)    
+    
+    currentMeme = getMemeArray().find(meme => meme.id === elMemeID)
 
     restoreMemeToEditor(currentMeme)
 
@@ -217,6 +231,17 @@ function onDeleteImage(elDeleteBtn) {
     }, 500);
 }
 
+function onDeleteMeme(elDeleteBtn) {
+
+    const elMemeID = parseInt(elDeleteBtn.id.replace(/\D/g, ''), 10)
+
+    const memeIDToDelete = getMemeArray().findIndex(meme => meme.id === elMemeID)    
+
+    deleteMeme(memeIDToDelete)
+    
+    renderSavedMemes()
+}
+
 
 
 
@@ -283,11 +308,11 @@ document.addEventListener('click', function (event) {
 
 
 function onOpenImageMenu(event, elImg) {
-    event.stopPropagation()
+    event.stopPropagation()        
 
-    const overlayID = parseInt(elImg.id.replace(/\D/g, ''), 10)
+    const overlayID = parseInt(elImg.id.replace(/\D/g, ''), 10)    
     const overlay = `overlay${overlayID}`
-    const imageButtonMenu = document.getElementById(overlay)
+    const imageButtonMenu = document.getElementById(overlay)    
     const allOverlays = document.querySelectorAll('.image-button-container-overlay')
 
     allOverlays.forEach(overlay => {
@@ -296,6 +321,23 @@ function onOpenImageMenu(event, elImg) {
     })
 
     imageButtonMenu.classList.remove('hidden')
+}
+
+
+function onOpenMemeMenu(event, elMeme) {
+    event.stopPropagation()        
+    
+    const overlayID = parseInt(elMeme.classList[0].replace(/\D/g, ''), 10)        
+    const overlay = `overlay-meme${overlayID}`
+    const memeButtonMenu = document.getElementById(overlay)  
+    const allOverlays = document.querySelectorAll('.image-button-container-overlay')
+
+    allOverlays.forEach(overlay => {
+        if (overlay.id !== overlay)
+            overlay.classList.add('hidden')
+    })
+
+    memeButtonMenu.classList.remove('hidden')
 }
 
 
@@ -347,4 +389,55 @@ function onChangePageNums(elBtn) {
 
     renderGallery()
     renderPageNumbers()
+}
+
+
+
+function onChangeMemePage(direction, value) {
+    const pageAmount = Math.ceil(memePageBy.total / memePageBy.amount) - 1
+
+    if (direction === 'up') {
+        if (memePageBy.page === pageAmount) {
+            memePageBy.page = 0
+        } else {
+            memePageBy.page += +value
+        }
+    }
+    if (direction === 'down') {
+        if (memePageBy.page === 0) {
+            memePageBy.page = pageAmount
+        } else {
+            memePageBy.page += +value
+        }
+    }
+    renderSavedMemes()
+    renderMemePageNumbers()
+}
+
+function renderMemePageNumbers() {
+    const previousPage = document.querySelector('.pageMemePrev')
+    const currentPage = document.querySelector('.pageMemeCurr')
+    const nextPage = document.querySelector('.pageMemeNext')
+
+    const pageAmount = Math.ceil(memePageBy.total / memePageBy.amount) - 1
+
+    currentPage.innerText = memePageBy.page
+
+    if (+currentPage.innerText === 0) {
+        previousPage.innerText = pageAmount
+    } else {
+        previousPage.innerText = currentPage.innerText - 1
+    }
+    if (+currentPage.innerText === pageAmount) {
+        nextPage.innerText = 0
+    } else {
+        nextPage.innerText = +currentPage.innerText + 1
+    }
+}
+
+function onChangeMemePageNums(elBtn) {
+    memePageBy.page = +elBtn.innerText
+
+    renderSavedMemes()
+    renderMemePageNumbers()
 }

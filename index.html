@@ -139,6 +139,17 @@
 
             <section class="saved-memes-container disappear">
                 <article class="saved-memes"></article>
+                <div class="page-container">
+                    <div class="page next-page" onclick="onChangeMemePage('up', 1)">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <div class="page pageMemePrev" onclick="onChangeMemePageNums(this)"></div>
+                    <div class="page pageMemeCurr" onclick="onChangeMemePageNums(this)"></div>
+                    <div class="page pageMemeNext" onclick="onChangeMemePageNums(this)"></div>
+                    <div class="page prev-page" onclick="onChangeMemePage('down', -1)">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </div>
+                </div>
             </section>
 
         </main>

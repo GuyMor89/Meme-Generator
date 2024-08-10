@@ -4,7 +4,7 @@
 function loadImages() {
 
     // const defaultImageArray = [{id: 6, url: 'IMG/6.jpg', keyword: 'funny'}, {id: 5, url: 'IMG/5.jpg', keyword: 'cute'}, {id: 4, url: 'IMG/4.jpg', keyword: 'cute'}, {id: 3, url: 'IMG/3.jpg', keyword: 'cool'}, {id: 2, url: 'IMG/2.jpg', keyword: 'cute'}, {id: 1, url: 'IMG/1.jpg', keyword: 'funny'}];
-    const defaultImageArray = [{id: 18, url: 'IMG/18.jpg', keyword: 'amazing'}, {id: 17, url: 'IMG/17.jpg', keyword: 'exciting'}, {id: 16, url: 'IMG/16.jpg', keyword: 'beautiful'}, {id: 15, url: 'IMG/15.jpg', keyword: 'scenic'}, {id: 14, url: 'IMG/14.jpg', keyword: 'adorable'}, {id: 13, url: 'IMG/13.jpg', keyword: 'hilarious'}, {id: 12, url: 'IMG/12.jpg', keyword: 'mysterious'}, {id: 11, url: 'IMG/11.jpg', keyword: 'cool'}, {id: 10, url: 'IMG/10.jpg', keyword: 'funny'}, {id: 9, url: 'IMG/9.jpg', keyword: 'cute'}, {id: 8, url: 'IMG/8.jpg', keyword: 'unique'}, {id: 7, url: 'IMG/7.jpg', keyword: 'quirky'}, {id: 6, url: 'IMG/6.jpg', keyword: 'funny'}, {id: 5, url: 'IMG/5.jpg', keyword: 'cute'}, {id: 4, url: 'IMG/4.jpg', keyword: 'cute'}, {id: 3, url: 'IMG/3.jpg', keyword: 'cool'}, {id: 2, url: 'IMG/2.jpg', keyword: 'cute'}, {id: 1, url: 'IMG/1.jpg', keyword: 'funny'}];
+    const defaultImageArray = [{id: 25, url: 'IMG/25.jpg', keyword: 'breathtaking'}, {id: 24, url: 'IMG/24.jpg', keyword: 'vibrant'}, {id: 23, url: 'IMG/23.jpg', keyword: 'colorful'}, {id: 22, url: 'IMG/22.jpg', keyword: 'thrilling'}, {id: 21, url: 'IMG/21.jpg', keyword: 'elegant'}, {id: 20, url: 'IMG/20.jpg', keyword: 'dramatic'}, {id: 19, url: 'IMG/19.jpg', keyword: 'inspiring'}, {id: 18, url: 'IMG/18.jpg', keyword: 'amazing'}, {id: 17, url: 'IMG/17.jpg', keyword: 'exciting'}, {id: 16, url: 'IMG/16.jpg', keyword: 'beautiful'}, {id: 15, url: 'IMG/15.jpg', keyword: 'scenic'}, {id: 14, url: 'IMG/14.jpg', keyword: 'adorable'}, {id: 13, url: 'IMG/13.jpg', keyword: 'hilarious'}, {id: 12, url: 'IMG/12.jpg', keyword: 'mysterious'}, {id: 11, url: 'IMG/11.jpg', keyword: 'cool'}, {id: 10, url: 'IMG/10.jpg', keyword: 'funny'}, {id: 9, url: 'IMG/9.jpg', keyword: 'cute'}, {id: 8, url: 'IMG/8.jpg', keyword: 'unique'}, {id: 7, url: 'IMG/7.jpg', keyword: 'quirky'}, {id: 6, url: 'IMG/6.jpg', keyword: 'funny'}, {id: 5, url: 'IMG/5.jpg', keyword: 'cute'}, {id: 4, url: 'IMG/4.jpg', keyword: 'cute'}, {id: 3, url: 'IMG/3.jpg', keyword: 'cool'}, {id: 2, url: 'IMG/2.jpg', keyword: 'cute'}, {id: 1, url: 'IMG/1.jpg', keyword: 'funny'}];
 
     if (loadFromStorage('imageArray') === undefined ||
         loadFromStorage('imageArray').length === 0)
@@ -45,13 +45,19 @@ function getImgArray() {
 
     imageArray = imageArray.filter((image, idx) => idx >= pageStart && idx <= pageEnd)
 
-
     return imageArray
 }
 
 function getMemeArray() {
 
     let memeArray = gMemes
+
+    memePageBy.total = memeArray.length
+
+    const pageStart = (memePageBy.page * memePageBy.amount)
+    const pageEnd = ((memePageBy.page * memePageBy.amount) + memePageBy.amount - 1)
+
+    memeArray = memeArray.filter((image, idx) => idx >= pageStart && idx <= pageEnd)
 
     return memeArray
 }
@@ -71,18 +77,21 @@ function addImage(url = image.src) {
 }
 
 function saveMeme() {
-    let memeArray = getMemeArray()
+    const memeArray = gMemes
+    const memeID = memeArray.length + 1
+
     let memeToSave = 
         {
+            id: memeID,
             imgID: currImage.id.replace('img', ''),
             url: convertCanvasToImage(),
             lines: [...textArray]
         }  
 
-    const memeID = memeArray.findIndex(meme => meme.url === memeToSave.url)
+    const memeToSaveID = memeArray.findIndex(meme => meme.url === memeToSave.url)
 
-    if (memeID !== -1) {
-        memeArray[memeID] = {...memeArray[memeID], ...memeToSave}
+    if (memeToSaveID !== -1) {
+        memeArray[memeToSaveID] = {...memeArray[memeToSaveID], ...memeToSave}
     } else {
         memeArray.push(memeToSave)
     }
@@ -97,4 +106,13 @@ function deleteImage(imageID) {
     imageArray.splice(imageID, 1)
     
     saveToStorage('imageArray', imageArray)
+}
+
+function deleteMeme(memeID) {
+
+    let memeArray = gMemes
+
+    memeArray.splice(memeID, 1)
+
+    saveToStorage('memeArray', memeArray)
 }

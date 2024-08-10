@@ -444,7 +444,7 @@ header {
     row-gap: 5px;
 
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto auto;
 
 }
 
@@ -538,7 +538,10 @@ header {
 
 .pagePrev,
 .pageCurr,
-.pageNext {
+.pageNext,
+.pageMemePrev,
+.pageMemeCurr,
+.pageMemeNext{
     margin-block-start: 0.62em;
     height: 40px;
     width: 40px;
@@ -575,16 +578,19 @@ header {
     grid-area: prev;
 }
 
-.pagePrev {
+.pagePrev,
+.pageMemePrev {
     grid-area: one;
 }
 
-.pageCurr {
+.pageCurr, 
+.pageMemeCurr{
     grid-area: two;
     background-color: rgb(255, 255, 255);
 }
 
-.pageNext {
+.pageNext,
+.pageMemeNext {
     grid-area: three;
 }
 
@@ -592,6 +598,9 @@ header {
 .pagePrev:hover,
 .pageCurr:hover,
 .pageNext:hover,
+.pageMemePrev:hover,
+.pageMemeCurr:hover,
+.pageMemeNext:hover,
 .page i:hover {
     background-color: #d7d7d7bf;
 }
@@ -951,13 +960,24 @@ input[type="range"]::-webkit-slider-thumb {
 .saved-memes {
     grid-column: 1 / -1;
     display: grid;
-    column-gap: 5px;
+    column-gap: 10px;
+    row-gap: 5px;
 
     grid-template-columns: 1fr 1fr 1fr;
 }
 
+.saved-memes>div {
+    position: relative;
+}
+
 .saved-memes img {
     width: 100%;
+
+    border-radius: 5px;
+
+    box-shadow:
+    2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+
     cursor: pointer;
 }
 
