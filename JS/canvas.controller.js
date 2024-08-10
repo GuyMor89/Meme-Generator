@@ -10,9 +10,12 @@ let textToEdit = null
 let deleteBtn = {}
 let textArray = []
 
+
 const textSettings = {
     fontSize: 40,
     fontColor: '#000000',
+    fillRect: false,
+    backgoundColor: '000000',
     strokeColor: '#000000',
     strokeWidth: 3,
     fontType: 'Segoe UI',
@@ -21,8 +24,6 @@ const textSettings = {
     underline: false,
     strikethrough: false
 }
-
-
 
 function addListeners() {
     gElCanvas.addEventListener('touchstart', onDown)
@@ -53,7 +54,7 @@ function getEventPos(event) {
 }
 
 
-function coverCanvasWithImg(elImgBtn) {    
+function coverCanvasWithImg(elImgBtn) {
     const elImg = document.querySelector(`.image${parseInt(elImgBtn.id.replace(/\D/g, ''), 10)} img`)
     currImage = elImg
 
@@ -119,17 +120,19 @@ function findText({ currentX, currentY }) {
 
 function startToEditText() {
 
-    const { content, fontSize, fontColor, strokeColor, strokeWidth } = textToEdit
+    const { content, fontSize, fontColor, backgoundColor ,strokeColor, strokeWidth } = textToEdit
 
     const contentInput = document.querySelector('#text')
     const fontSizeInput = document.querySelector('#font-size')
     const fontColorInput = document.querySelector('#font-color')
+    const backgoundColorInput = document.querySelector('#background-color')
     const strokeColorInput = document.querySelector('#stroke-color')
     const strokeWidthInput = document.querySelector('#stroke-width')
 
     contentInput.value = content
     fontSizeInput.value = parseInt(fontSize)
     fontColorInput.value = fontColor
+    backgoundColorInput.value = backgoundColor
     strokeColorInput.value = strokeColor
     strokeWidthInput.value = strokeWidth
 
@@ -141,11 +144,13 @@ function editText({ ID }, textInput) {
 
     let textIDToEdit = textArray.findIndex(text => text.ID === ID)
 
-    const { fontSize, fontColor, strokeColor, strokeWidth, fontType, bold, italicize, underline, strikethrough } = textSettings
+    const { fontSize, fontColor, fillRect, backgoundColor, strokeColor, strokeWidth, fontType, bold, italicize, underline, strikethrough } = textSettings
 
     if (textInput) textArray[textIDToEdit].content = textInput.value
     textArray[textIDToEdit].fontSize = `${fontSize}px`
     textArray[textIDToEdit].fontColor = `${fontColor}`
+    textArray[textIDToEdit].fillRect = fillRect
+    textArray[textIDToEdit].backgoundColor = `${backgoundColor}`
     textArray[textIDToEdit].strokeColor = `${strokeColor}`
     textArray[textIDToEdit].strokeWidth = `${strokeWidth}`
     textArray[textIDToEdit].fontType = `${fontType}`
@@ -155,7 +160,7 @@ function editText({ ID }, textInput) {
     textArray[textIDToEdit].strikethrough = strikethrough
     textArray[textIDToEdit].deleteBtnX = deleteBtn.X
     textArray[textIDToEdit].deleteBtnY = deleteBtn.Y
-
+    
     renderText()
 }
 
@@ -166,7 +171,7 @@ function onAddText(event) {
 
     if (textToEdit) return editText(textToEdit, textInput)
 
-    const { fontSize, fontColor, strokeColor, strokeWidth, fontType, bold, italicize } = textSettings
+    const { fontSize, fontColor, backgoundColor, strokeColor, strokeWidth, fontType, bold, italicize } = textSettings
 
     if (event.key === 'Enter') {
         const newText = {
@@ -179,13 +184,15 @@ function onAddText(event) {
             isMoving: false,
             fontSize: `${fontSize}px`,
             fontColor: `${fontColor}`,
+            fillRect: false,
+            backgoundColor: `${backgoundColor}`,
             strokeColor: `${strokeColor}`,
             strokeWidth: `${strokeWidth}`,
             fontType: `${fontType}`,
             bold: `${bold}`,
             italicize: `${italicize}`,
             underline: false,
-            strikethrough:  false
+            strikethrough: false
         }
         textArray.push(newText)
 
@@ -204,8 +211,9 @@ function renderText() {
         coverCanvasWithImg(currImage)
     }
 
-    textArray.forEach(({ X, Y, content, fontColor, strokeColor, strokeWidth, fontSize, fontType, bold, italicize, underline, strikethrough }) => {
+    textArray.forEach(({ X, Y, content, fontColor, fillRect, strokeColor, strokeWidth, fontSize, fontType, bold, italicize, underline, strikethrough }) => {
 
+        if (fillRect) addBackgroundColor(X, Y, content)
         CTX.beginPath()
         CTX.textAlign = 'center'
         CTX.textBaseline = 'middle'
@@ -223,7 +231,7 @@ function renderText() {
     if (textToEdit) drawBorder(textToEdit.X, textToEdit.Y, textToEdit.content)
 }
 
-function drawStrike (X, Y, content) {
+function drawStrike(X, Y, content) {
     const textWidth = CTX.measureText(content).width
     const textHeight = parseInt(CTX.font.match(/\b(\d+)(px)?\b/)[1], 10)
 
@@ -249,7 +257,7 @@ function drawUnderline(X, Y, content) {
 
 
 function drawBorder(x, y, content) {
-
+    
     if (!content || !textToEdit || textArray.length === 0) return
 
     const textWidth = CTX.measureText(content).width
@@ -310,17 +318,46 @@ function deleteText({ currentX, currentY }) {
             contentInput.value = ''
             contentInput.blur()
         }
-
     }
+}
+
+function deleteLine() {
+    const contentInput = document.querySelector('#text')
+
+    let textIDToRemove = textArray.findIndex(text => text.ID === textToEdit.ID)
+
+    textArray.splice(textIDToRemove, 1)
+    textToEdit = null
+    contentInput.value = ''
+    contentInput.blur()
+
+    renderText()
+}
+
+function addBackgroundColor(X, Y, content) {
+    const textWidth = CTX.measureText(content).width
+    const textHeight = parseInt(CTX.font.match(/\b(\d+)(px)?\b/)[1], 10)
+
+    // Calculate rectangle dimensions
+    const rectX = (X - textWidth / 2) - 10
+    const rectY = (Y - textHeight / 2) - 15
+    const rectWidth = textWidth + 20
+    const rectHeight = textHeight + 20
+
+    // Draw the main rectangle
+    CTX.beginPath()
+    CTX.rect(rectX, rectY, rectWidth, rectHeight)
+    CTX.fillStyle = textSettings.backgoundColor
+    CTX.fillRect(rectX + 5, rectY + 5, rectWidth - 10, rectHeight - 10)
 }
 
 
 
-
-function onChangeSettings(elBtn) {
+function onChangeSettings(elBtn) {    
 
     const fontSize = +document.querySelector('#font-size').value
     const textColor = document.querySelector('#font-color').value
+    const backgoundColor = document.querySelector('#background-color').value
     const strokeColor = document.querySelector('#stroke-color').value
     const strokeWidth = +document.querySelector('#stroke-width').value
 
@@ -328,12 +365,14 @@ function onChangeSettings(elBtn) {
     const italicizeBtn = document.querySelector('.fa-italic')
     const underlineBtn = document.querySelector('.fa-underline')
     const strikethroughBtn = document.querySelector('.fa-strikethrough')
+    const fillRectBtn = document.querySelector('.fa-fill')
 
     const fontSizeCounter = document.querySelector('.font-size-counter')
     const strokeWidthCounter = document.querySelector('.stroke-width-counter')
 
     textSettings.fontSize = fontSize
     textSettings.fontColor = textColor
+    textSettings.backgoundColor = backgoundColor
     textSettings.strokeColor = strokeColor
     textSettings.strokeWidth = strokeWidth
 
@@ -351,7 +390,7 @@ function onChangeSettings(elBtn) {
             textSettings.italicize = 'italic '
         }
     }
-    if (elBtn === underlineBtn) {        
+    if (elBtn === underlineBtn) {
         if (textSettings.underline) {
             textSettings.underline = false
         } else {
@@ -363,6 +402,13 @@ function onChangeSettings(elBtn) {
             textSettings.strikethrough = false
         } else {
             textSettings.strikethrough = true
+        }
+    }
+    if (elBtn === fillRectBtn) {
+        if (textSettings.fillRect) {
+            textSettings.fillRect = false
+        } else {
+            textSettings.fillRect = true
         }
     }
 

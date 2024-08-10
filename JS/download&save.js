@@ -2,7 +2,7 @@
 
 function convertCanvasToImage() {
     const imgDataUrl = gElCanvas.toDataURL('image/jpeg') // image/jpeg the default format
-    return imgDataUrl    
+    return imgDataUrl
 }
 
 function onCreateDownloadLink(elLink) {
@@ -10,13 +10,36 @@ function onCreateDownloadLink(elLink) {
 }
 
 
-function onSaveMeme() {    
-    saveMeme()
+function onSaveMeme() {
 
-    textArray.length = 0
-    textToEdit = null
+    const messageContainer = document.querySelector('.message-container')
 
-    renderSavedMemes()
+    if (!currImage) {
+        messageContainer.classList.remove('hidden')
+        messageContainer.style.width = '250px'
+        messageContainer.innerText = 'Can\'t save empty meme'
+        setTimeout(() => {
+            messageContainer.classList.add('hidden')
+        }, 1000);
+
+        return
+    } else {
+        messageContainer.classList.remove('hidden')
+        messageContainer.style.width = '135px'
+        messageContainer.innerText = 'Meme Saved'
+        setTimeout(() => {
+            messageContainer.classList.add('hidden')
+        }, 1000);
+
+        textToEdit = null
+
+        renderText()
+        saveMeme()
+
+        textArray.length = 0
+
+        renderSavedMemes()
+    }
 }
 
 

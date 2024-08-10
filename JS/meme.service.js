@@ -76,10 +76,12 @@ function addImage(url = image.src) {
     saveToStorage('imageArray', imageArray)
 }
 
-function saveMeme() {
+function saveMeme() {    
     const memeArray = gMemes
-    const memeID = memeArray.length + 1
-
+    const lastMeme = memeArray[memeArray.length - 1]
+    const lastId = lastMeme && lastMeme.id ? lastMeme.id : 0
+    const memeID = memeArray.length + 1 > lastId ? memeArray.length + 1 : lastId + 1
+    
     let memeToSave = 
         {
             id: memeID,

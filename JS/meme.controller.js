@@ -12,10 +12,12 @@ let currentMeme = null
 function onInit() {
     renderGallery()
     renderSavedMemes()
+    onAddKeywordsToDisplay()
+
     addListeners()
+
     renderPageNumbers()
     renderMemePageNumbers()
-    onAddKeywordsToDisplay()
 }
 
 function renderGallery() {
@@ -72,8 +74,8 @@ function renderSavedMemes() {
 
 
 function onSetCurrentMeme(elMemeBtn) {
-    const elMemeID = parseInt(elMemeBtn.id.replace(/\D/g, ''), 10)    
-    
+    const elMemeID = parseInt(elMemeBtn.id.replace(/\D/g, ''), 10)
+
     currentMeme = getMemeArray().find(meme => meme.id === elMemeID)
 
     restoreMemeToEditor(currentMeme)
@@ -102,6 +104,7 @@ function onSearchGallery(element) {
     if (element.tagName === 'DIV') elInput.value = filterBy.keyword = element.innerText
 
     renderGallery()
+    renderPageNumbers()
 }
 
 
@@ -110,7 +113,7 @@ function onAddKeywordsToDisplay() {
     const elInput = document.querySelector('.search-input')
     const keyword = elInput.value
 
-    keywordsToDisplay.push({ keyword, size: 16 })
+    if (keyword) keywordsToDisplay.push({ keyword, size: 16 })
 
     const keywordHTML = keywordsToDisplay.map(({ keyword }) =>
         `<div class="keyword ${keyword}" onclick="changeKeywordSize(this); onSearchGallery(this);">${keyword}</div>`
@@ -142,7 +145,7 @@ function showModal() {
     modalOverlay.classList.add('overlay-on')
 }
 
-function closeModal() {
+function onCloseModal() {
     const modalOverlay = document.querySelector('.modal-overlay')
     const modal = document.querySelector('.find-image-modal-container')
 
@@ -235,35 +238,38 @@ function onDeleteMeme(elDeleteBtn) {
 
     const elMemeID = parseInt(elDeleteBtn.id.replace(/\D/g, ''), 10)
 
-    const memeIDToDelete = getMemeArray().findIndex(meme => meme.id === elMemeID)    
+    const memeIDToDelete = getMemeArray().findIndex(meme => meme.id === elMemeID)
 
     deleteMeme(memeIDToDelete)
-    
+
     renderSavedMemes()
+    renderMemePageNumbers()
 }
 
 
 
 
 function onSwitchTabs(element) {
+    
     const galleryContainer = document.querySelector('.gallery-container')
     const editorContainer = document.querySelector('.editor-container')
     const savedContainer = document.querySelector('.saved-memes-container')
 
-    if (element.innerText === 'Gallery' || element.innerText.includes('FreshMeme')) {
+    if (element.id === 'gallery' || element.innerText.includes('FreshMeme')) {
         galleryContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
     }
-    if (element.innerText === 'Editor' || element.classList.contains('use-button') || element.classList.contains('saved')) {
+    if (element.id === 'editor' || element.classList.contains('use-button') || element.classList.contains('saved')) {
         editorContainer.classList.remove('disappear')
         galleryContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
     }
-    if (element.innerText === 'Saved') {
+    if (element.id === 'saved') {
         savedContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         galleryContainer.classList.add('disappear')
+        renderMemePageNumbers()
     }
 }
 
@@ -308,11 +314,11 @@ document.addEventListener('click', function (event) {
 
 
 function onOpenImageMenu(event, elImg) {
-    event.stopPropagation()        
+    event.stopPropagation()
 
-    const overlayID = parseInt(elImg.id.replace(/\D/g, ''), 10)    
+    const overlayID = parseInt(elImg.id.replace(/\D/g, ''), 10)
     const overlay = `overlay${overlayID}`
-    const imageButtonMenu = document.getElementById(overlay)    
+    const imageButtonMenu = document.getElementById(overlay)
     const allOverlays = document.querySelectorAll('.image-button-container-overlay')
 
     allOverlays.forEach(overlay => {
@@ -325,11 +331,11 @@ function onOpenImageMenu(event, elImg) {
 
 
 function onOpenMemeMenu(event, elMeme) {
-    event.stopPropagation()        
-    
-    const overlayID = parseInt(elMeme.classList[0].replace(/\D/g, ''), 10)        
+    event.stopPropagation()
+
+    const overlayID = parseInt(elMeme.classList[0].replace(/\D/g, ''), 10)
     const overlay = `overlay-meme${overlayID}`
-    const memeButtonMenu = document.getElementById(overlay)  
+    const memeButtonMenu = document.getElementById(overlay)
     const allOverlays = document.querySelectorAll('.image-button-container-overlay')
 
     allOverlays.forEach(overlay => {
@@ -440,4 +446,23 @@ function onChangeMemePageNums(elBtn) {
 
     renderSavedMemes()
     renderMemePageNumbers()
+}
+
+
+
+document.querySelectorAll('.emoji-container').forEach(container => {
+    // This regex matches most common emojis
+    const emojiRegex = /[\u231A-\u231B\u2328\u2388\u23CF-\u23D3\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA-\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2605\u2607-\u2612\u2614-\u2685\u26A0-\u26FA\u2701-\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934-\u2935\u2B05-\u2B07\u2B1B-\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83D[\uDE80-\uDEFF]|\uD83E[\uDD00-\uDDFF]/g;
+    // Replace each emoji in the container's text with a span-wrapped emoji
+    container.innerHTML = container.innerHTML.replace(emojiRegex, '<span class="emoji" onclick="onUseEmoji(this)">$&</span>');
+})
+
+function onUseEmoji(elEmoji) {
+    const textInput = document.getElementById('text')
+
+    const savedText = textInput.value
+
+    textInput.value = savedText + elEmoji.innerText
+
+    if (textToEdit) onAddText()
 }
