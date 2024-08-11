@@ -165,7 +165,7 @@ header {
     padding-block-start: 0.85em;
 
     line-height: 1;
-    font-family: Edu-Regular,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Edu-Regular, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 400;
 }
 
@@ -321,6 +321,14 @@ header {
     font-size: 2.25em;
 }
 
+.upload-button-container:hover >label>i{
+    animation: slideInUp 1000ms; 
+}
+
+.find-button-container:hover >div>i{
+    animation: slideOutDown 1000ms; 
+}
+
 
 
 .modal-overlay {
@@ -471,7 +479,9 @@ header {
 .gallery>div {
     position: relative;
 
+    display: grid;
 
+    place-items: center;
 }
 
 .gallery>div img {
@@ -482,9 +492,19 @@ header {
     box-shadow:
         2px 2px 5px 0px rgba(0, 0, 0, 0.2);
 
+    border: 3px solid rgba(0, 0, 0, 0.207);
+
     cursor: pointer;
+
+    filter: saturate(0.5);
+
+    transition: filter 600ms, border 300ms;
 }
 
+.gallery>div:hover img {
+    filter: saturate(1);
+    border: 3px solid rgba(0, 0, 0, 0.6);
+}
 
 
 .image-button-container-overlay {
@@ -500,7 +520,7 @@ header {
     place-items: center;
     pointer-events: none;
 
-    background-color: rgba(211, 211, 211, 0.153);
+    /* background-color: rgba(211, 211, 211, 0.1); */
 
     transition: opacity 300ms, visibility 300ms
 }
@@ -522,7 +542,7 @@ header {
 
     cursor: pointer;
     pointer-events: all;
-    background-color: #e8e8e869;
+    background-color: rgba(232, 232, 232, 0.712);
 
     border: 2px solid rgba(0, 0, 0, 0.211);
     border-radius: 5px;
@@ -532,7 +552,7 @@ header {
 
 .use-button:hover,
 .delete-button:hover {
-    background-color: #e8e8e893;
+    background-color: rgba(232, 232, 232, 0.976);
 }
 
 
@@ -585,11 +605,19 @@ header {
     padding: 0.25em;
     padding-inline: 0.4em;
     border-radius: 5px;
+    direction: ltr;
 
     font-size: 2em;
 
     transition: background-color 300ms;
 }
+
+/* Apply a transform only if the document is in RTL mode */
+[dir="rtl"] .icon-correct {
+    transform: scaleX(-1);
+}
+
+
 
 
 .next-page {
@@ -767,6 +795,9 @@ canvas {
     border: 2px solid rgba(0, 0, 0, 0.234);
     border-radius: 5px;
 
+    box-shadow:
+        1px 1px 5px 0px rgba(0, 0, 0, 0.2);
+
     transition: opacity 300ms, visibility 300ms
 }
 
@@ -793,6 +824,7 @@ canvas {
     grid-row: 1;
 
     padding: 0.25em;
+    padding-inline: 0.5em;
     margin-block: 0;
 
     place-self: center;
@@ -847,7 +879,7 @@ canvas {
     justify-self: center;
 }
 
-.color-container>div:first-of-type i{
+.color-container>div:first-of-type i {
     grid-column: 1;
     grid-row: 1;
     margin: 0;
@@ -967,6 +999,9 @@ input[type="range"]::-webkit-slider-thumb {
     border: 2px solid rgba(0, 0, 0, 0.234);
     border-radius: 5px;
 
+    box-shadow:
+        1px 1px 5px 0px rgba(0, 0, 0, 0.2);
+
     font-size: 1.1em;
 }
 
@@ -984,7 +1019,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 
-.download-container {
+.link-container {
     margin-block-start: 0.5em;
     margin-block-end: 1em;
 
@@ -998,13 +1033,13 @@ input[type="range"]::-webkit-slider-thumb {
     align-self: self-end;
 }
 
-.download-button-container {
+.link-button-container {
     display: grid;
     grid-auto-flow: column;
     gap: 1em;
 }
 
-.download-button-container>a {
+.link-button-container>a {
     position: relative;
 
     padding-inline: 10px;
@@ -1018,6 +1053,9 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 5px;
     text-align: center;
 
+    box-shadow:
+        1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+
     height: fit-content;
     width: 175px;
 
@@ -1029,11 +1067,11 @@ input[type="range"]::-webkit-slider-thumb {
     transition: background-color 300ms;
 }
 
-.download-button-container>a:hover {
+.link-button-container>a:hover {
     background-color: rgba(0, 0, 0, 0.054);
 }
 
-.download-button-container>a>i {
+.link-button-container>a>i {
     font-size: 1.5em;
 }
 
@@ -1060,6 +1098,9 @@ input[type="range"]::-webkit-slider-thumb {
     background-color: white;
     border: 2px solid rgba(0, 0, 0, 0.258);
     border-radius: 5px;
+
+    box-shadow:
+        1px 1px 5px 0px rgba(0, 0, 0, 0.1);
 }
 
 .saved-memes {
@@ -1083,9 +1124,19 @@ input[type="range"]::-webkit-slider-thumb {
     box-shadow:
         2px 2px 5px 0px rgba(0, 0, 0, 0.2);
 
+    border: 3px solid rgba(0, 0, 0, 0.2);
+
+
     cursor: pointer;
+    filter: saturate(0.5);
+
+    transition: filter 600ms, border 300ms;
 }
 
+.saved-memes>div img:hover {
+    filter: saturate(1);
+    border: 3px solid rgba(0, 0, 0, 0.6);
+}
 
 
 footer {

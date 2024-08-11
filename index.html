@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MemeMaster</title>
+    <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/main.css">
 </head>
@@ -14,25 +15,28 @@
     <div class="container-container">
         <main class="main-container">
             <div class="modal-overlay" onclick="onCloseModal()"></div>
-    
+
             <header>
                 <div class="sub-header">
                     <div class="logo" onclick="onSwitchTabs(this)">FreshMeme <i class="fas fa-leaf"
                             style="color: #33c751;"></i>
                     </div>
-    
+
                     <article class="nav-container">
-                        <div class="gallery-button" id="gallery" onclick="onSwitchTabs(this)" data-i18n="gallery">Gallery</div>
-                        <div class="editor-button" id="editor" onclick="onSwitchTabs(this)" data-i18n="editor">Editor</div>
+                        <div class="gallery-button" id="gallery" onclick="onSwitchTabs(this)" data-i18n="gallery">
+                            Gallery</div>
+                        <div class="editor-button" id="editor" onclick="onSwitchTabs(this)" data-i18n="editor">Editor
+                        </div>
                         <div class="saved-button" id="saved" onclick="onSwitchTabs(this)" data-i18n="saved">Saved</div>
                     </article>
                 </div>
             </header>
-    
+
             <section class="gallery-container">
                 <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Find your template.." oninput="onSearchGallery(this)"
-                        onchange="onAddKeywordsToDisplay()" data-i18n="searchPlaceholder">
+                    <input type="text" class="search-input" placeholder="Find your template.."
+                        oninput="onSearchGallery(this)" onchange="onAddKeywordsToDisplay()"
+                        data-i18n="searchPlaceholder">
                     <i class="fa-solid fa-magnifying-glass" onchange="onAddKeywordsToDisplay()"></i>
                     <div class="keyword-display-container">
                         <div class="keyword-display"></div>
@@ -60,25 +64,26 @@
                             <i class="fa-solid fa-magnifying-glass" onclick="findImage()"></i>
                         </div>
                         <div class="image-container"></div>
-                        <div class="download-image" onclick="onDownloadImage()" data-i18n="downloadImage">Download Image</div>
+                        <div class="download-image" onclick="onDownloadImage()" data-i18n="downloadImage">Download Image
+                        </div>
                     </div>
                 </div>
-    
+
                 <div class="page-container">
                     <div class="page next-page" onclick="onChangePage('up', 1)">
-                        <i class="fa-solid fa-chevron-right"></i>
+                        <i class="fa-solid fa-chevron-right icon-correct"></i>
                     </div>
                     <div class="page pagePrev" onclick="onChangePageNums(this)"></div>
                     <div class="page pageCurr" onclick="onChangePageNums(this)"></div>
                     <div class="page pageNext" onclick="onChangePageNums(this)"></div>
                     <div class="page prev-page" onclick="onChangePage('down', -1)">
-                        <i class="fa-solid fa-chevron-left"></i>
+                        <i class="fa-solid fa-chevron-left icon-correct"></i>
                     </div>
                 </div>
-    
+
             </section>
-    
-    
+
+
             <section class="editor-container disappear">
                 <div class="canvas-container">
                     <canvas width="500px" height="500px"></canvas>
@@ -86,8 +91,9 @@
                 <article class="options-container">
                     <div class="options">
                         <div>
-                            <input type="text" name="text" id="text" placeholder="Enter text.." oninput="onAddText(event)"
-                                onkeydown="onAddText(event)" data-i18n="enterTextPlaceholder">
+                            <input type="text" name="text" id="text" placeholder="Enter text.."
+                                oninput="onAddText(event)" onkeydown="onAddText(event)"
+                                data-i18n="enterTextPlaceholder">
                             <i class="fa-solid fa-eraser" onclick="deleteLine()"></i>
                         </div>
                         <i class="fa-solid fa-text-height" onclick="toggleOptionsMenu(this)"></i>
@@ -95,7 +101,8 @@
                             <i class="fa-solid fa-bold" onclick="onChangeSettings(this); onAddText(event);"></i>
                             <i class="fa-solid fa-italic" onclick="onChangeSettings(this); onAddText(event);"></i>
                             <i class="fa-solid fa-underline" onclick="onChangeSettings(this); onAddText(event);"></i>
-                            <i class="fa-solid fa-strikethrough" onclick="onChangeSettings(this); onAddText(event);"></i>
+                            <i class="fa-solid fa-strikethrough"
+                                onclick="onChangeSettings(this); onAddText(event);"></i>
                             <div>
                                 <label for="font-size" data-i18n="fontSizeLabel">Font Size:</label>
                                 <input type="range" name="font-size" id="font-size" min="5" max="100" value="40"
@@ -128,43 +135,48 @@
                                     oninput="onChangeSettings(); onAddText(event);">
                             </div>
                         </div>
-    
+
                         <article class="emoji-container">😃 😄 😁 😆 😅 😂 😉 😊 😇 😍 😘 😚 😋 😜 😝 😐 😶 😏 😒 😌 😪
                         </article>
                     </div>
-    
+
                 </article>
-                <article class="download-container">
-                    <div class="download-button-container">
-                        <a href="#" class="download-button" onclick="onCreateDownloadLink(this)" download="my-img.jpg" data-i18n="downloadMemeButton">Download Meme<i class="fa-solid fa-download"></i></a>
-                        <a href="#" class="share-button" onclick="onCreateShareLink()" data-i18n="shareMemeButton">Share Meme<i class="fa-solid fa-share-from-square"></i></a>
-                        <a href="#" class="save-button" onclick="onSaveMeme()" data-i18n="saveMemeButton">
-                            <div class="message-container hidden" onclick="onShowMessage()" data-i18n="saveMessage">Save Successful!</div>
-                            Save Meme<i class="fa-solid fa-floppy-disk"></i>
+                <article class="link-container">
+                    <div class="link-button-container">
+                        <a href="#" class="download-button" onclick="onCreateDownloadLink(this)"
+                            download="my-img.jpg"><span data-i18n="downloadMemeButton">Download Meme</span><i
+                                class="fa-solid fa-download"></i></a>
+                        <a href="#" class="share-button" onclick="onCreateShareLink()"><span
+                                data-i18n="shareMemeButton">Share Meme</span><i
+                                class="fa-solid fa-share-from-square"></i></a>
+                        <a href="#" class="save-button" onclick="onSaveMeme()">
+                            <div class="message-container hidden" onclick="onShowMessage()"><span
+                                    data-i18n="saveMessage">Save Successful!</span></div>
+                            <span data-i18n="saveMemeButton">Save Meme</span><i class="fa-solid fa-floppy-disk"></i>
                         </a>
                     </div>
                 </article>
             </section>
-    
-    
+
+
             <section class="saved-memes-container disappear">
                 <article class="saved-memes"></article>
                 <div class="page-container">
                     <div class="page next-page" onclick="onChangeMemePage('up', 1)">
-                        <i class="fa-solid fa-chevron-right"></i>
+                        <i class="fa-solid fa-chevron-right icon-correct"></i>
                     </div>
                     <div class="page pageMemePrev" onclick="onChangeMemePageNums(this)"></div>
                     <div class="page pageMemeCurr" onclick="onChangeMemePageNums(this)"></div>
                     <div class="page pageMemeNext" onclick="onChangeMemePageNums(this)"></div>
                     <div class="page prev-page" onclick="onChangeMemePage('down', -1)">
-                        <i class="fa-solid fa-chevron-left"></i>
+                        <i class="fa-solid fa-chevron-left icon-correct"></i>
                     </div>
                 </div>
             </section>
-    
+
         </main>
     </div>
-    
+
     <footer>
         <select class="language-toggle">
             <option value="en">English</option>
@@ -172,10 +184,11 @@
         </select>
         <div>Copyright
             <i class="fa-regular fa-copyright"></i>
-            2024<span data-i18n="footerBy">by Guy Mor</span></div>
-            <a></a>
+            2024<span data-i18n="footerBy">by Guy Mor</span>
+        </div>
+        <a></a>
     </footer>
-    
+
 
 
     <script src="https://kit.fontawesome.com/75cbaaf481.js" crossorigin="anonymous"></script>

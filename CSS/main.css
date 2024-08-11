@@ -47,11 +47,11 @@
         grid-template-columns: 1fr;
     }
 
-    .download-container {
+    .link-container {
         grid-row: 3;
     }
 
-    .download-button-container>a {
+    .link-button-container>a {
         font-size: 1.05em;
         width: 150px;
     }

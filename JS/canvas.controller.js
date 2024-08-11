@@ -55,12 +55,37 @@ function getEventPos(event) {
 
 
 function coverCanvasWithImg(elImgBtn) {
-    const elImg = document.querySelector(`.image${parseInt(elImgBtn.id.replace(/\D/g, ''), 10)} img`)
-    currImage = elImg
+    const elImg = document.querySelector(`.image${parseInt(elImgBtn.id.replace(/\D/g, ''), 10)} img`);
+    currImage = elImg;  // Ensure currImage is declared with 'let' or 'var' if not globally declared
 
-    gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * gElCanvas.width
-    CTX.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
+    // Calculate the potential dimensions
+    let potentialHeight = (elImg.naturalHeight / elImg.naturalWidth) * 500;  // Start with width = 500 to find the potential height
+    let potentialWidth = (elImg.naturalWidth / elImg.naturalHeight) * 500;   // Start with height = 500 to find the potential width
+
+    if (potentialHeight <= 500 && potentialWidth <= 500) {
+        // If both potential dimensions are within limits, adjust canvas based on aspect ratio
+        gElCanvas.width = 500;
+        gElCanvas.height = potentialHeight;
+    } else if (potentialHeight > 500) {
+        // If potential height is too large, adjust width to maintain aspect ratio
+        gElCanvas.width = (elImg.naturalWidth / elImg.naturalHeight) * 500;
+        gElCanvas.height = 500;
+    } else {
+        // Otherwise, adjust height to maintain aspect ratio
+        gElCanvas.width = 500;
+        gElCanvas.height = potentialHeight;
+    }
+
+    // Adjust width again if it exceeds 500 after height adjustment
+    if (gElCanvas.width > 500) {
+        gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * 500;
+        gElCanvas.width = 500;
+    }
+
+    // Draw the image on the canvas
+    CTX.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height);
 }
+
 
 
 function onDown(event) {

@@ -71,6 +71,14 @@ function translatePage(lang) {
             }
         }
     });
+
+    // Update the document direction based on the selected language
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+
+    // Update the URL to include the selected language
+    const url = new URL(window.location);
+    url.searchParams.set('lang', lang);
+    window.history.pushState({}, '', url);
 }
 
 
