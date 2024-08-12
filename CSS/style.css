@@ -730,14 +730,33 @@ canvas {
 
 .options>div:first-child input {
     height: 100%;
+    width: 95%;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.options>div:first-child i {
+.options>div:first-child i:first-of-type {
     grid-row: 1;
     grid-column: 2;
 
-    margin-inline-start: 0.5em;
-    margin-block: 0;
+    margin: 0;
+
+    padding-block: 0.4em;
+    padding-inline: 0.4em;
+
+    font-size: 2em;
+}
+
+.options>div:first-child i:nth-of-type(2) {
+    grid-row: 1;
+    grid-column: 3;
+
+    margin: 0;
+
+    padding-block: 0.4em;
+    padding-inline: 0.4em;
+
+    margin-inline-start: 0.25em;
 
     font-size: 2em;
 }
@@ -987,7 +1006,7 @@ input[type="range"]::-webkit-slider-thumb {
 .emoji-container {
     grid-column: 1 / -1;
 
-    margin-block-start: 1.2em;
+    margin-block-start: 0.75em;
 
     padding-block: 0.5em;
     padding-inline: 1em;
