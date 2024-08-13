@@ -11,6 +11,7 @@ let deleteBtn = {}
 let textArray = []
 
 
+const defaultTextSettings = { fontSize: 40, fontColor: '#000000', fillRect: false, backgoundColor: '000000', strokeColor: '#000000', strokeWidth: 3, fontType: 'Segoe UI', bold: '', italicize: '', underline: false, strikethrough: false }
 const textSettings = {
     fontSize: 40,
     fontColor: '#000000',
@@ -54,44 +55,10 @@ function getEventPos(event) {
 }
 
 
-function coverCanvasWithImg(elImgBtn) {
-    const elImg = document.querySelector(`.image${parseInt(elImgBtn.id.replace(/\D/g, ''), 10)} img`);
-    currImage = elImg;  // Ensure currImage is declared with 'let' or 'var' if not globally declared
-
-    // Calculate the potential dimensions
-    let potentialHeight = (elImg.naturalHeight / elImg.naturalWidth) * 500;  // Start with width = 500 to find the potential height
-    let potentialWidth = (elImg.naturalWidth / elImg.naturalHeight) * 500;   // Start with height = 500 to find the potential width
-
-    if (potentialHeight <= 500 && potentialWidth <= 500) {
-        // If both potential dimensions are within limits, adjust canvas based on aspect ratio
-        gElCanvas.width = 500;
-        gElCanvas.height = potentialHeight;
-    } else if (potentialHeight > 500) {
-        // If potential height is too large, adjust width to maintain aspect ratio
-        gElCanvas.width = (elImg.naturalWidth / elImg.naturalHeight) * 500;
-        gElCanvas.height = 500;
-    } else {
-        // Otherwise, adjust height to maintain aspect ratio
-        gElCanvas.width = 500;
-        gElCanvas.height = potentialHeight;
-    }
-
-    // Adjust width again if it exceeds 500 after height adjustment
-    if (gElCanvas.width > 500) {
-        gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * 500;
-        gElCanvas.width = 500;
-    }
-
-    // Draw the image on the canvas
-    CTX.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height);
-}
-
-
-
 function onDown(event) {
     textToEdit = null
     findText(getEventPos(event))
-    deleteText(getEventPos(event))
+    deleteText(getEventPos(event), event)
 
     if (textToEdit) textToEdit.isMoving = true
 
@@ -116,6 +83,52 @@ function onMove(event) {
 }
 
 
+function coverCanvasWithImg(elImgBtn) {
+    if (elImgBtn.tagName === 'DIV') resetText()
+
+    const elImg = document.querySelector(`.image${parseInt(elImgBtn.id.replace(/\D/g, ''), 10)} img`)
+    currImage = elImg  // Ensure currImage is declared with 'let' or 'var' if not globally declared
+
+    // Calculate the potential dimensions
+    let potentialHeight = (elImg.naturalHeight / elImg.naturalWidth) * 500  // Start with width = 500 to find the potential height
+    let potentialWidth = (elImg.naturalWidth / elImg.naturalHeight) * 500   // Start with height = 500 to find the potential width
+
+    if (potentialHeight <= 500 && potentialWidth <= 500) {
+        // If both potential dimensions are within limits, adjust canvas based on aspect ratio
+        gElCanvas.width = 500
+        gElCanvas.height = potentialHeight
+    } else if (potentialHeight > 500) {
+        // If potential height is too large, adjust width to maintain aspect ratio
+        gElCanvas.width = (elImg.naturalWidth / elImg.naturalHeight) * 500
+        gElCanvas.height = 500
+    } else {
+        // Otherwise, adjust height to maintain aspect ratio
+        gElCanvas.width = 500
+        gElCanvas.height = potentialHeight
+    }
+
+    // Adjust width again if it exceeds 500 after height adjustment
+    if (gElCanvas.width > 500) {
+        gElCanvas.height = (elImg.naturalHeight / elImg.naturalWidth) * 500
+        gElCanvas.width = 500
+    }
+
+    // Draw the image on the canvas
+    CTX.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height)
+}
+
+
+function resetText() {
+    const contentInput = document.querySelector('#text')
+
+    Object.assign(textSettings, defaultTextSettings)
+    contentInput.value = ''
+    textToEdit = null
+    textArray = []
+}
+
+
+
 
 function findText({ currentX, currentY }) {
 
@@ -137,15 +150,15 @@ function findText({ currentX, currentY }) {
         }
     }
 
-    if (textToEdit) startToEditText()
+    if (textToEdit) restoreSettings()
 
 }
 
 
 
-function startToEditText() {
+function restoreSettings() {
 
-    const { content, fontSize, fontColor, backgoundColor ,strokeColor, strokeWidth } = textToEdit
+    const { content, fontColor, fillRect, backgoundColor, strokeColor, strokeWidth, fontSize, fontType, bold, italicize, underline, strikethrough } = textToEdit
 
     const contentInput = document.querySelector('#text')
     const fontSizeInput = document.querySelector('#font-size')
@@ -161,32 +174,22 @@ function startToEditText() {
     strokeColorInput.value = strokeColor
     strokeWidthInput.value = strokeWidth
 
-    editText(textToEdit)
-}
+    textSettings.fontColor = fontColor
+    textSettings.fillRect = fillRect
+    textSettings.backgoundColor = backgoundColor
+    textSettings.strokeColor = strokeColor
+    textSettings.strokeWidth = strokeWidth
+    textSettings.fontSize = fontSize
+    textSettings.fontType = fontType
+    textSettings.bold = bold
+    textSettings.italicize = italicize
+    textSettings.underline = underline
+    textSettings.strikethrough = strikethrough
 
 
-function editText({ ID }, textInput) {
+    const textInput = document.querySelector('#text')
 
-    let textIDToEdit = textArray.findIndex(text => text.ID === ID)
-
-    const { fontSize, fontColor, fillRect, backgoundColor, strokeColor, strokeWidth, fontType, bold, italicize, underline, strikethrough } = textSettings
-
-    if (textInput) textArray[textIDToEdit].content = textInput.value
-    textArray[textIDToEdit].fontSize = `${fontSize}px`
-    textArray[textIDToEdit].fontColor = `${fontColor}`
-    textArray[textIDToEdit].fillRect = fillRect
-    textArray[textIDToEdit].backgoundColor = `${backgoundColor}`
-    textArray[textIDToEdit].strokeColor = `${strokeColor}`
-    textArray[textIDToEdit].strokeWidth = `${strokeWidth}`
-    textArray[textIDToEdit].fontType = `${fontType}`
-    textArray[textIDToEdit].bold = `${bold}`
-    textArray[textIDToEdit].italicize = `${italicize}`
-    textArray[textIDToEdit].underline = underline
-    textArray[textIDToEdit].strikethrough = strikethrough
-    textArray[textIDToEdit].deleteBtnX = deleteBtn.X
-    textArray[textIDToEdit].deleteBtnY = deleteBtn.Y
-    
-    renderText()
+    editText(textToEdit, textInput)
 }
 
 
@@ -198,7 +201,7 @@ function onAddText(event) {
 
     const { fontSize, fontColor, backgoundColor, strokeColor, strokeWidth, fontType, bold, italicize } = textSettings
 
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' || event.target.tagName === 'I') {
         const newText = {
             ID: textArray.length,
             content: textInput.value,
@@ -207,7 +210,7 @@ function onAddText(event) {
             deleteBtnX: 0,
             deleteBtnY: 0,
             isMoving: false,
-            fontSize: `${fontSize}px`,
+            fontSize: `${fontSize}`,
             fontColor: `${fontColor}`,
             fillRect: false,
             backgoundColor: `${backgoundColor}`,
@@ -229,6 +232,43 @@ function onAddText(event) {
 }
 
 
+function editText({ ID }, textInput) {
+
+    let textIDToEdit = textArray.findIndex(text => text.ID === ID)
+
+    const { fontSize, fontColor, fillRect, backgoundColor, strokeColor, strokeWidth, fontType, bold, italicize, underline, strikethrough } = textSettings
+
+    if (textInput) textArray[textIDToEdit].content = textInput.value
+    textArray[textIDToEdit].fontSize = `${fontSize}`
+    textArray[textIDToEdit].fontColor = `${fontColor}`
+    textArray[textIDToEdit].fillRect = fillRect
+    textArray[textIDToEdit].backgoundColor = `${backgoundColor}`
+    textArray[textIDToEdit].strokeColor = `${strokeColor}`
+    textArray[textIDToEdit].strokeWidth = `${strokeWidth}`
+    textArray[textIDToEdit].fontType = `${fontType}`
+    textArray[textIDToEdit].bold = `${bold}`
+    textArray[textIDToEdit].italicize = `${italicize}`
+    textArray[textIDToEdit].underline = underline
+    textArray[textIDToEdit].strikethrough = strikethrough
+    textArray[textIDToEdit].deleteBtnX = deleteBtn.X
+    textArray[textIDToEdit].deleteBtnY = deleteBtn.Y
+
+    renderText()
+
+    document.addEventListener('click', event => {
+
+        if (event.target.classList.contains('fa-check')) {
+            textInput.value = ''
+            textToEdit = null
+            renderText()
+        }
+    })
+}
+
+
+
+
+
 function renderText() {
     if (!currImage) {
         CTX.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
@@ -236,13 +276,13 @@ function renderText() {
         coverCanvasWithImg(currImage)
     }
 
-    textArray.forEach(({ X, Y, content, fontColor, fillRect, strokeColor, strokeWidth, fontSize, fontType, bold, italicize, underline, strikethrough }) => {
+    textArray.forEach(({ X, Y, content, fontColor, fillRect, backgoundColor, strokeColor, strokeWidth, fontSize, fontType, bold, italicize, underline, strikethrough }) => {
 
-        if (fillRect) addBackgroundColor(X, Y, content)
+        CTX.font = `${bold}${italicize}${fontSize}px ${fontType}`
+        if (fillRect) addBackgroundColor(X, Y, content, backgoundColor)
         CTX.beginPath()
         CTX.textAlign = 'center'
         CTX.textBaseline = 'middle'
-        CTX.font = `${bold}${italicize}${fontSize} ${fontType}`
 
         CTX.fillStyle = fontColor
         CTX.strokeStyle = strokeColor
@@ -256,33 +296,10 @@ function renderText() {
     if (textToEdit) drawBorder(textToEdit.X, textToEdit.Y, textToEdit.content)
 }
 
-function drawStrike(X, Y, content) {
-    const textWidth = CTX.measureText(content).width
-    const textHeight = parseInt(CTX.font.match(/\b(\d+)(px)?\b/)[1], 10)
-
-    CTX.beginPath();
-    CTX.moveTo(X - textWidth / 2, Y); // Start point of the line
-    CTX.lineTo(X + textWidth / 2, Y); // End point of the line
-    CTX.lineWidth = textHeight / 10
-    CTX.strokeStyle = 'black'; // Line color
-    CTX.stroke(); // Draw the line
-}
-
-function drawUnderline(X, Y, content) {
-    const textWidth = CTX.measureText(content).width
-    const textHeight = parseInt(CTX.font.match(/\b(\d+)(px)?\b/)[1], 10)
-
-    CTX.beginPath();
-    CTX.moveTo(X - textWidth / 2, Y + textHeight / 2.5); // Start point of the line
-    CTX.lineTo(X + textWidth / 2, Y + textHeight / 2.5); // End point of the line
-    CTX.lineWidth = textHeight / 15
-    CTX.strokeStyle = 'black'; // Line color
-    CTX.stroke(); // Draw the line
-}
 
 
 function drawBorder(x, y, content) {
-    
+
     if (!content || !textToEdit || textArray.length === 0) return
 
     const textWidth = CTX.measureText(content).width
@@ -303,7 +320,7 @@ function drawBorder(x, y, content) {
     CTX.stroke()
 
     // Draw the delete button
-    const buttonSize = 20; // Size of the delete button
+    const buttonSize = 20 // Size of the delete button
     const buttonX = rectX + rectWidth - buttonSize / 2
     const buttonY = rectY - buttonSize / 2
 
@@ -327,39 +344,32 @@ function drawBorder(x, y, content) {
     CTX.stroke()
 }
 
-function deleteText({ currentX, currentY }) {
-    const contentInput = document.querySelector('#text')
 
-    if (textToEdit) {
-        let textIDToRemove = textArray.findIndex(text => text.ID === textToEdit.ID)
-        if (
-            currentX >= textToEdit.deleteBtnX &&
-            currentX <= textToEdit.deleteBtnX + 20 &&
-            currentY >= textToEdit.deleteBtnY &&
-            currentY <= textToEdit.deleteBtnY + 20
-        ) {
-            textArray.splice(textIDToRemove, 1)
-            textToEdit = null
-            contentInput.value = ''
-            contentInput.blur()
-        }
-    }
+function drawStrike(X, Y, content) {
+    const textWidth = CTX.measureText(content).width
+    const textHeight = parseInt(CTX.font.match(/\b(\d+)(px)?\b/)[1], 10)
+
+    CTX.beginPath()
+    CTX.moveTo(X - textWidth / 2, Y) // Start point of the line
+    CTX.lineTo(X + textWidth / 2, Y) // End point of the line
+    CTX.lineWidth = textHeight / 10
+    CTX.strokeStyle = 'black' // Line color
+    CTX.stroke() // Draw the line
 }
 
-function deleteLine() {
-    const contentInput = document.querySelector('#text')
+function drawUnderline(X, Y, content) {
+    const textWidth = CTX.measureText(content).width
+    const textHeight = parseInt(CTX.font.match(/\b(\d+)(px)?\b/)[1], 10)
 
-    let textIDToRemove = textArray.findIndex(text => text.ID === textToEdit.ID)
-
-    textArray.splice(textIDToRemove, 1)
-    textToEdit = null
-    contentInput.value = ''
-    contentInput.blur()
-
-    renderText()
+    CTX.beginPath()
+    CTX.moveTo(X - textWidth / 2, Y + textHeight / 2.5) // Start point of the line
+    CTX.lineTo(X + textWidth / 2, Y + textHeight / 2.5) // End point of the line
+    CTX.lineWidth = textHeight / 15
+    CTX.strokeStyle = 'black' // Line color
+    CTX.stroke() // Draw the line
 }
 
-function addBackgroundColor(X, Y, content) {
+function addBackgroundColor(X, Y, content, backgoundColor) {
     const textWidth = CTX.measureText(content).width
     const textHeight = parseInt(CTX.font.match(/\b(\d+)(px)?\b/)[1], 10)
 
@@ -372,13 +382,43 @@ function addBackgroundColor(X, Y, content) {
     // Draw the main rectangle
     CTX.beginPath()
     CTX.rect(rectX, rectY, rectWidth, rectHeight)
-    CTX.fillStyle = textSettings.backgoundColor
+    CTX.fillStyle = backgoundColor
     CTX.fillRect(rectX + 5, rectY + 5, rectWidth - 10, rectHeight - 10)
 }
 
 
 
-function onChangeSettings(elBtn) {    
+
+function deleteText({ currentX, currentY } = {}, event) {    
+
+    if (!textToEdit) return
+
+    const contentInput = document.querySelector('#text')
+
+    let textIDToRemove = textArray.findIndex(text => text.ID === textToEdit.ID)
+
+    if (
+        (
+            currentX >= textToEdit.deleteBtnX &&
+            currentX <= textToEdit.deleteBtnX + 20 &&
+            currentY >= textToEdit.deleteBtnY &&
+            currentY <= textToEdit.deleteBtnY + 20
+        ) || event.target.tagName === 'I'
+    ) 
+    {        
+        textArray.splice(textIDToRemove, 1)
+        textToEdit = null
+        contentInput.value = ''
+        contentInput.blur()
+    }
+
+    renderText()
+}
+
+
+
+
+function onChangeSettings(elBtn) {
 
     const fontSize = +document.querySelector('#font-size').value
     const textColor = document.querySelector('#font-color').value
@@ -440,3 +480,5 @@ function onChangeSettings(elBtn) {
     strokeWidthCounter.innerText = strokeWidth
     fontSizeCounter.innerText = fontSize
 }
+
+

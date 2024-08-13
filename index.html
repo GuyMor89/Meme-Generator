@@ -32,6 +32,7 @@
                 </div>
             </header>
 
+            <section class="tagline">Choose a Meme Template</section>
             <section class="gallery-container">
                 <div class="search-container">
                     <input type="text" class="search-input" placeholder="Find your template.."
@@ -94,8 +95,8 @@
                             <input type="text" name="text" id="text" placeholder="Enter text.."
                                 oninput="onAddText(event)" onkeydown="onAddText(event)"
                                 data-i18n="enterTextPlaceholder">
-                                <i class="fa-solid fa-check"></i>
-                            <i class="fa-solid fa-eraser" onclick="deleteLine()"></i>
+                            <i class="fa-solid fa-check" onclick="onAddText(event)"></i>
+                            <i class="fa-solid fa-eraser" onclick="deleteText({}, event)"></i>
                         </div>
                         <i class="fa-solid fa-text-height" onclick="toggleOptionsMenu(this)"></i>
                         <div class="font-container">
@@ -197,7 +198,6 @@
     <script src="JS/util.js"></script>
     <script src="JS/i18n.js"></script>
     <script src="JS/meme.service.js"></script>
-    <script src="JS/canvas.service.js"></script>
     <script src="JS/meme.controller.js"></script>
     <script src="JS/canvas.controller.js"></script>
     <script src="JS/image-search.js"></script>

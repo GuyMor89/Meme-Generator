@@ -59,6 +59,17 @@ body {
 }
 
 
+.tagline {
+    grid-column: 1 / -1;
+
+    margin-block-start: 0.5em;
+    margin-block-end: 0.7em;
+
+    font-size: 2em;
+    font-family: Noto-Regular;
+    line-height: 1;
+}
+
 
 
 .message-container {
@@ -96,6 +107,8 @@ header {
 
     box-shadow:
         0px 1px 5px 0px rgba(0, 0, 0, 0.35);
+
+    z-index: 5;
 }
 
 .sub-header {
@@ -321,12 +334,12 @@ header {
     font-size: 2.25em;
 }
 
-.upload-button-container:hover >label>i{
-    animation: slideInUp 1000ms; 
+.upload-button-container:hover>label>i {
+    animation: slideInUp 1000ms;
 }
 
-.find-button-container:hover >div>i{
-    animation: slideOutDown 1000ms; 
+.find-button-container:hover>div>i {
+    animation: slideOutDown 1000ms;
 }
 
 
@@ -729,6 +742,8 @@ canvas {
 }
 
 .options>div:first-child input {
+    padding-inline-start: 0.5em;
+
     height: 100%;
     width: 95%;
 
@@ -741,10 +756,14 @@ canvas {
 
     margin: 0;
 
-    padding-block: 0.4em;
-    padding-inline: 0.4em;
+    padding-block: 0.2em;
+    padding-inline: 0.25em;
 
-    font-size: 2em;
+    font-size: 2.5em;
+}
+
+.options>div:first-child i:first-of-type:hover {
+    background-color: rgba(51, 199, 81, 0.218);
 }
 
 .options>div:first-child i:nth-of-type(2) {
@@ -759,6 +778,10 @@ canvas {
     margin-inline-start: 0.25em;
 
     font-size: 2em;
+}
+
+.options>div:first-child i:nth-of-type(2):hover {
+    background-color: rgba(199, 51, 51, 0.218);
 }
 
 
@@ -815,7 +838,7 @@ canvas {
     border-radius: 5px;
 
     box-shadow:
-        1px 1px 5px 0px rgba(0, 0, 0, 0.2);
+        1px 1px 5px 0px rgba(0, 0, 0, 0.1);
 
     transition: opacity 300ms, visibility 300ms
 }
@@ -827,7 +850,7 @@ canvas {
 
 .font-container {
     grid-column: 1 / -1;
-    width: 90%;
+    width: 95%;
 }
 
 .color-container {

@@ -78,13 +78,6 @@ function onSetCurrentMeme(elMemeBtn) {
 
     currentMeme = getMemeArray().find(meme => meme.id === elMemeID)
 
-    restoreMemeToEditor(currentMeme)
-
-    currentMeme = null
-}
-
-
-function restoreMemeToEditor(currentMeme) {
     const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
 
     coverCanvasWithImg(elSavedMemeImg)
@@ -92,7 +85,10 @@ function restoreMemeToEditor(currentMeme) {
     textArray = currentMeme.lines.map(line => ({ ...line }))
 
     renderText()
+
+    currentMeme = null
 }
+
 
 
 
@@ -254,18 +250,22 @@ function onSwitchTabs(element) {
     const galleryContainer = document.querySelector('.gallery-container')
     const editorContainer = document.querySelector('.editor-container')
     const savedContainer = document.querySelector('.saved-memes-container')
+    const taglineContainer = document.querySelector('.tagline')
 
     if (element.id === 'gallery' || element.innerText.includes('FreshMeme')) {
+        taglineContainer.innerText = 'Choose a Meme Template'
         galleryContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
     }
     if (element.id === 'editor' || element.classList.contains('use-button') || element.classList.contains('saved')) {
+        taglineContainer.innerText = 'Edit, Download & Save your Meme'
         editorContainer.classList.remove('disappear')
         galleryContainer.classList.add('disappear')
         savedContainer.classList.add('disappear')
     }
     if (element.id === 'saved') {
+        taglineContainer.innerText = 'Choose a Meme to Edit'
         savedContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         galleryContainer.classList.add('disappear')

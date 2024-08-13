@@ -6,6 +6,10 @@ function convertCanvasToImage() {
 }
 
 function onCreateDownloadLink(elLink) {
+    textToEdit = null
+
+    renderText()
+
     elLink.href = convertCanvasToImage()
 }
 
