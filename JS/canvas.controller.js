@@ -56,7 +56,7 @@ function getEventPos(event) {
 
 
 function onDown(event) {
-    textToEdit = null
+    resetText()
     findText(getEventPos(event))
     deleteText(getEventPos(event), event)
 
@@ -84,7 +84,10 @@ function onMove(event) {
 
 
 function coverCanvasWithImg(elImgBtn) {
-    if (elImgBtn.tagName === 'DIV') resetText()
+    if (elImgBtn.tagName === 'DIV') {
+        resetText()
+        textArray = []
+    }
 
     const elImg = document.querySelector(`.image${parseInt(elImgBtn.id.replace(/\D/g, ''), 10)} img`)
     currImage = elImg  // Ensure currImage is declared with 'let' or 'var' if not globally declared
@@ -124,7 +127,6 @@ function resetText() {
     Object.assign(textSettings, defaultTextSettings)
     contentInput.value = ''
     textToEdit = null
-    textArray = []
 }
 
 
@@ -389,7 +391,7 @@ function addBackgroundColor(X, Y, content, backgoundColor) {
 
 
 
-function deleteText({ currentX, currentY } = {}, event) {    
+function deleteText({ currentX, currentY } = {}, event) {
 
     if (!textToEdit) return
 
@@ -404,8 +406,7 @@ function deleteText({ currentX, currentY } = {}, event) {
             currentY >= textToEdit.deleteBtnY &&
             currentY <= textToEdit.deleteBtnY + 20
         ) || event.target.tagName === 'I'
-    ) 
-    {        
+    ) {
         textArray.splice(textIDToRemove, 1)
         textToEdit = null
         contentInput.value = ''

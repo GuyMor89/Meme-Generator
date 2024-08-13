@@ -1,8 +1,13 @@
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
+
+@import url(base.css);
+@import url(typography.css);
+@import url(layout.css);
+@import url(header.css);
+@import url(gallery.css);
+@import url(editor.css);
+@import url(saved-memes.css);
+@import url(footer.css);
+
 
 @media (width < 1140px) {
 

@@ -1,0 +1,312 @@
+
+.gallery-container {
+    padding: 0.75em;
+    margin-inline: 0.75em;
+    margin-block-end: 1em;
+
+    width: 1010.5px;
+
+    background-color: rgb(250, 250, 250);
+    border: 2px solid rgba(0, 0, 0, 0.258);
+    border-radius: 5px;
+    box-shadow:
+        1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    margin-block-end: 1em;
+    padding-inline: 0.4em;
+
+    width: 100%;
+}
+
+.search-input {
+    margin-inline-end: 0.5em;
+
+    padding-inline: 0.5em;
+    padding-block: 0.25em;
+
+    width: 100%;
+    height: 100%;
+
+    border: 2px solid rgba(0, 0, 0, 0.233);
+    border-radius: 3px;
+
+    font-size: 1.25em;
+}
+
+.search-container i {
+    padding-inline: 0.5em;
+    padding-block: 0.5em;
+
+    width: fit-content;
+    height: fit-content;
+
+    background-color: rgba(0, 0, 0, 0.125);
+    border-radius: 5px;
+
+    font-size: 1.5em;
+
+    transition: background-color 300ms;
+
+    cursor: pointer;
+
+    box-shadow:
+        1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.search-container i:hover {
+    background-color: #aeaeaebf;
+}
+
+.search-container i:nth-of-type(2) {
+    margin-inline-start: 0.25em;
+    margin-inline-end: 0.5em;
+}
+
+.keyword-display-container {
+    margin-block-end: 0.5em;
+
+    width: 100%;
+    height: 100%;
+
+    border: 2px solid rgba(0, 0, 0, 0.233);
+    border-radius: 3px;
+}
+
+.keyword-display {
+    width: fit-content;
+}
+
+.keyword-display>div {
+    cursor: pointer;
+
+    margin-block: auto;
+}
+
+.upload-button-container,
+.find-button-container {
+    margin-block-end: 1em;
+
+    border: 2px solid rgba(0, 0, 0, 0.211);
+    border-radius: 5px;
+
+    box-shadow:
+        1px 1px 5px 0px rgba(0, 0, 0, 0.1);
+}
+
+.upload-button-container label,
+.find-button-container div {
+    padding-inline: 1em;
+    padding-block: 0.5em;
+
+    transition: background-color 300ms;
+
+    cursor: pointer;
+}
+
+.upload-button-container label:hover,
+.find-button-container div:hover {
+    background-color: #e8e8e893;
+}
+
+.upload-button-container span,
+.find-button-container span {
+    font-size: 1.25em;
+}
+
+.upload-button-container i,
+.find-button-container i {
+    font-size: 2.25em;
+}
+
+.upload-button-container:hover>label>i {
+    animation: slideInUp 1000ms;
+}
+
+.find-button-container:hover>div>i {
+    animation: slideOutDown 1000ms;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    cursor: pointer;
+    pointer-events: none;
+    z-index: 10;
+
+    transition: background-color 0.6s;
+}
+
+.overlay-on {
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+}
+
+.find-image-modal-container {
+    position: absolute;
+
+    height: 500px;
+    width: 500px;
+
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgba(0, 0, 0, 0.211);
+    border-radius: 5px;
+
+    z-index: 20;
+}
+
+.find-image-modal {
+    width: 100%;
+    height: 100%;
+}
+
+.find-image-search {
+    margin-block-start: 1em;
+
+    height: fit-content;
+    width: 100%;
+}
+
+.find-image-search input {
+    margin-inline-end: 0.5em;
+    padding-block: 0.25em;
+    padding-inline-start: 0.5em;
+
+    font-size: 1.25em;
+
+    border: 2px solid rgba(0, 0, 0, 0.233);
+    border-radius: 3px;
+}
+
+.find-image-search i {
+    padding: 0.6em;
+
+    background-color: rgba(0, 0, 0, 0.125);
+    border: 2px solid rgba(0, 0, 0, 0.211);
+    border-radius: 5px;
+
+    width: fit-content;
+
+    transition: background-color 300ms;
+
+    cursor: pointer;
+
+}
+
+.find-image-search .close-button {
+    margin-inline-start: 1em;
+    margin-inline-end: 0.5em;
+    font-size: 1.5em;
+    padding: 0.3em;
+}
+
+.find-image-search i:hover {
+    background-color: #aeaeaebf;
+}
+
+.image-container {
+    height: 375px;
+    width: 375px;
+}
+
+.image-container img {
+    width: 100%;
+}
+
+.download-image {
+    margin-block-end: 0.5em;
+    padding-block: 0.25em;
+    padding-inline: 0.5em;
+
+    border: 2px solid rgba(0, 0, 0, 0.211);
+    border-radius: 5px;
+
+    font-size: 1.25em;
+
+    transition: background-color 300ms;
+    cursor: pointer;
+}
+
+.download-image:hover {
+    background-color: #e8e8e893;
+}
+
+.gallery>div {
+    position: relative;
+    
+    overflow: hidden;
+
+    border-radius: 5px;
+}
+
+.gallery>div img {
+    width: 100%;
+    height: auto;
+
+    box-shadow:
+        2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+
+    border: 3px solid rgba(0, 0, 0, 0.207);
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    filter: saturate(0.75);
+
+    object-fit: contain;
+
+    transition: filter 600ms, border 300ms, scale 600ms;
+}
+
+.gallery>div:hover img {
+    max-width: 100%;
+    max-height: 100%;
+
+    filter: saturate(1);
+    scale: 1.1;
+    border: 3px solid rgba(0, 0, 0, 0.6);
+}
+
+
+.image-button-container-overlay {
+    position: absolute;
+    height: 99%;
+    width: 100%;
+
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+    transition: opacity 300ms, visibility 300ms
+}
+
+.image-button-container {
+    height: fit-content;
+    width: fit-content;
+}
+
+.use-button,
+.delete-button {
+    padding: 0.25em;
+
+    font-size: 3em;
+
+    cursor: pointer;
+    pointer-events: all;
+    background-color: rgba(232, 232, 232, 0.712);
+
+    border: 2px solid rgba(0, 0, 0, 0.211);
+    border-radius: 5px;
+
+    transition: background-color 300ms;
+}
+
+.use-button:hover,
+.delete-button:hover {
+    background-color: rgba(232, 232, 232, 0.976);
+}

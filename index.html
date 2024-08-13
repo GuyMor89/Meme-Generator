@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FreshMeme</title>
     <link rel="stylesheet" href="css/animate.min.css">
-    <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/main.css">
 </head>
 
@@ -39,6 +38,7 @@
                         oninput="onSearchGallery(this)" onchange="onAddKeywordsToDisplay()"
                         data-i18n="searchPlaceholder">
                     <i class="fa-solid fa-magnifying-glass" onchange="onAddKeywordsToDisplay()"></i>
+                    <i class="fa-solid fa-ban" onclick="onSearchGallery(this)"></i>
                     <div class="keyword-display-container">
                         <div class="keyword-display"></div>
                     </div>

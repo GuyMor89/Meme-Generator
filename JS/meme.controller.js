@@ -98,11 +98,14 @@ function onSearchGallery(element) {
 
     if (element.tagName === 'INPUT') filterBy.keyword = element.value
     if (element.tagName === 'DIV') elInput.value = filterBy.keyword = element.innerText
+    if (element.tagName === 'I') {
+        elInput.value = ''
+        filterBy.keyword = ''
+    }
 
     renderGallery()
     renderPageNumbers()
 }
-
 
 function onAddKeywordsToDisplay() {
     const keywordDisplay = document.querySelector('.keyword-display')
@@ -246,7 +249,7 @@ function onDeleteMeme(elDeleteBtn) {
 
 
 function onSwitchTabs(element) {
-    
+
     const galleryContainer = document.querySelector('.gallery-container')
     const editorContainer = document.querySelector('.editor-container')
     const savedContainer = document.querySelector('.saved-memes-container')
