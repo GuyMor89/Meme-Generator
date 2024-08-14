@@ -13,7 +13,7 @@
 
     <div class="container-container">
         <main class="main-container">
-            <div class="modal-overlay" onclick="onCloseModal()"></div>
+            <div class="modal-overlay" onclick="onCloseFindImageModal()"></div>
 
             <header>
                 <div class="sub-header">
@@ -51,7 +51,7 @@
                         onchange="onUploadImage(event)" accept="image/*" hidden>
                 </div>
                 <div class="find-button-container">
-                    <div class="find-button" onclick="showModal()"><span data-i18n="findImage">Find Image</span>
+                    <div class="find-button" onclick="onShowFindImageModal()"><span data-i18n="findImage">Find Image</span>
                         <i class="fa-solid fa-cloud-arrow-down"></i>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="find-image-modal-container hidden">
                     <div class="find-image-modal">
                         <div class="find-image-search">
-                            <i class="fa-solid fa-xmark close-button" onclick="onCloseModal()"></i>
+                            <i class="fa-solid fa-xmark close-button" onclick="onCloseFindImageModal()"></i>
                             <input type="text" class="find-image-input" placeholder="Find an image.."
                                 data-i18n="findImagePlaceholder">
                             <i class="fa-solid fa-magnifying-glass" onclick="findImage()"></i>
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="page-container">
-                    <div class="page next-page" onclick="onChangePage('up', 1)">
+                    <div class="page next-page" onclick="onChangePage('up', 1, this)">
                         <i class="fa-solid fa-chevron-right icon-correct"></i>
                     </div>
                     <div class="page pagePrev" onclick="onChangePageNums(this)"></div>
@@ -200,6 +200,7 @@
     <script src="JS/meme.service.js"></script>
     <script src="JS/meme.controller.js"></script>
     <script src="JS/canvas.controller.js"></script>
+    <script src="JS/pagination.js"></script>
     <script src="JS/image-search.js"></script>
     <script src="JS/download&save.js"></script>
 

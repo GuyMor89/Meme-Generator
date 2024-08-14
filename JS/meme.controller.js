@@ -2,8 +2,8 @@
 
 
 let filterBy = { keyword: '' }
-var pageBy = { page: 0, amount: 6, total: 0 }
-var memePageBy = { page: 0, amount: 6, total: 0 }
+const pageBy = { page: 0, amount: 6, total: 0 }
+const memePageBy = { page: 0, amount: 6, total: 0 }
 
 let keywordsToDisplay = [{ keyword: 'funny', size: 16 }, { keyword: 'cool', size: 20 }, { keyword: 'cute', size: 25 }, { keyword: 'amazing', size: 16 }, { keyword: 'hilarious', size: 19 }]
 let currentMeme = null
@@ -45,8 +45,6 @@ function renderGallery() {
     elGallery.insertAdjacentHTML('beforeend', imageHTML.join(''))
 }
 
-
-
 function renderSavedMemes() {
     const elSavedMemes = document.querySelector('.saved-memes')
 
@@ -58,7 +56,7 @@ function renderSavedMemes() {
         <img src="${url}" id="meme${imgID}" class="saved${id}" onclick="onOpenMemeMenu(event, this)">
         <div class="image-button-container-overlay hidden" id="overlay-meme${id}">
         <div class="image-button-container">
-        <div class="btn${id} use-button" id="use-meme${id}" onclick="onSetCurrentMeme(this); onSwitchTabs(this); onOpenMemeMenu(event, this)">
+        <div class="btn${id} use-button" id="use-meme${id}" onclick="onReturnMemeToEditor(this); onSwitchTabs(this); onOpenMemeMenu(event, this)">
         <i class="fa-solid fa-check" ></i>
         </div>
         <div class="delete-button" id="btn-meme${id}" onclick="onDeleteMeme(this)">
@@ -72,25 +70,37 @@ function renderSavedMemes() {
     elSavedMemes.insertAdjacentHTML('beforeend', memeHTML.join(''))
 }
 
+function onSwitchTabs(element) {
 
-function onSetCurrentMeme(elMemeBtn) {
-    const elMemeID = parseInt(elMemeBtn.id.replace(/\D/g, ''), 10)
+    const galleryContainer = document.querySelector('.gallery-container')
+    const editorContainer = document.querySelector('.editor-container')
+    const savedContainer = document.querySelector('.saved-memes-container')
+    const taglineContainer = document.querySelector('.tagline')
 
-    currentMeme = getMemeArray().find(meme => meme.id === elMemeID)
-
-    const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
-
-    coverCanvasWithImg(elSavedMemeImg)
-
-    textArray = currentMeme.lines.map(line => ({ ...line }))
-
-    renderText()
-
-    currentMeme = null
+    if (element.id === 'gallery' || element.innerText.includes('FreshMeme')) {
+        taglineContainer.innerText = 'Choose a Meme Template'
+        galleryContainer.classList.remove('disappear')
+        editorContainer.classList.add('disappear')
+        savedContainer.classList.add('disappear')
+    }
+    if (element.id === 'editor' || element.classList.contains('use-button') || element.classList.contains('saved')) {
+        taglineContainer.innerText = 'Edit, Download & Save your Meme'
+        editorContainer.classList.remove('disappear')
+        galleryContainer.classList.add('disappear')
+        savedContainer.classList.add('disappear')
+    }
+    if (element.id === 'saved') {
+        taglineContainer.innerText = 'Choose a Meme to Edit'
+        savedContainer.classList.remove('disappear')
+        editorContainer.classList.add('disappear')
+        galleryContainer.classList.add('disappear')
+        renderMemePageNumbers()
+    }
 }
 
 
 
+// Gallery
 
 function onSearchGallery(element) {
 
@@ -125,7 +135,6 @@ function onAddKeywordsToDisplay() {
     elKeywords.forEach(elKeyword => elKeyword.style.fontSize = `${keywordsToDisplay.find(({ keyword }) => keyword === elKeyword.innerText).size}px`)
 }
 
-
 function changeKeywordSize(elKeyword) {
 
     const keywordID = keywordsToDisplay.findIndex(({ keyword }) =>
@@ -136,7 +145,7 @@ function changeKeywordSize(elKeyword) {
     elKeyword.style.fontSize = `${keywordsToDisplay[keywordID].size}px`
 }
 
-function showModal() {
+function onShowFindImageModal() {
     const modalOverlay = document.querySelector('.modal-overlay')
     const modal = document.querySelector('.find-image-modal-container')
 
@@ -144,14 +153,13 @@ function showModal() {
     modalOverlay.classList.add('overlay-on')
 }
 
-function onCloseModal() {
+function onCloseFindImageModal() {
     const modalOverlay = document.querySelector('.modal-overlay')
     const modal = document.querySelector('.find-image-modal-container')
 
     modal.classList.add('hidden')
     modalOverlay.classList.remove('overlay-on')
 }
-
 
 function onAddImage() {
     const modalOverlay = document.querySelector('.modal-overlay')
@@ -169,7 +177,6 @@ function onAddImage() {
 
     renderGallery()
 }
-
 
 function onDownloadImage() {
     if (!image.src) return
@@ -194,8 +201,6 @@ function onDownloadImage() {
         .catch(error => console.error('Error downloading the image:', error))
 }
 
-
-
 function onUploadImage(event) {
     loadImageFromInput(event, addImage)
 
@@ -215,7 +220,6 @@ function loadImageFromInput(ev, addImage) {
     }
     reader.readAsDataURL(ev.target.files[0])
 }
-
 
 function onDeleteImage(elDeleteBtn) {
 
@@ -245,36 +249,40 @@ function onDeleteMeme(elDeleteBtn) {
     renderMemePageNumbers()
 }
 
+document.addEventListener('click', function (event) {
+    // Retrieve all overlays
+    const overlays = document.querySelectorAll('.image-button-container-overlay:not(.hidden)')
 
+    // Check if the click target is part of any overlay
+    let isClickInsideOverlay = Array.from(overlays).some(overlay => {
+        return overlay.contains(event.target)
+    })
 
-
-function onSwitchTabs(element) {
-
-    const galleryContainer = document.querySelector('.gallery-container')
-    const editorContainer = document.querySelector('.editor-container')
-    const savedContainer = document.querySelector('.saved-memes-container')
-    const taglineContainer = document.querySelector('.tagline')
-
-    if (element.id === 'gallery' || element.innerText.includes('FreshMeme')) {
-        taglineContainer.innerText = 'Choose a Meme Template'
-        galleryContainer.classList.remove('disappear')
-        editorContainer.classList.add('disappear')
-        savedContainer.classList.add('disappear')
+    // If the click is not inside any open overlay, hide all overlays
+    if (!isClickInsideOverlay) {
+        overlays.forEach(overlay => overlay.classList.add('hidden'))
     }
-    if (element.id === 'editor' || element.classList.contains('use-button') || element.classList.contains('saved')) {
-        taglineContainer.innerText = 'Edit, Download & Save your Meme'
-        editorContainer.classList.remove('disappear')
-        galleryContainer.classList.add('disappear')
-        savedContainer.classList.add('disappear')
-    }
-    if (element.id === 'saved') {
-        taglineContainer.innerText = 'Choose a Meme to Edit'
-        savedContainer.classList.remove('disappear')
-        editorContainer.classList.add('disappear')
-        galleryContainer.classList.add('disappear')
-        renderMemePageNumbers()
-    }
+})
+
+function onOpenImageMenu(event, elImg) {
+    event.stopPropagation()
+
+    const overlayID = parseInt(elImg.id.replace(/\D/g, ''), 10)
+    const overlay = `overlay${overlayID}`
+    const imageButtonMenu = document.getElementById(overlay)
+    const allOverlays = document.querySelectorAll('.image-button-container-overlay')
+
+    allOverlays.forEach(overlay => {
+        if (overlay.id !== overlay)
+            overlay.classList.add('hidden')
+    })
+
+    imageButtonMenu.classList.remove('hidden')
 }
+
+
+
+// Editor
 
 function toggleOptionsMenu(elIcon) {
     const fontContainer = document.querySelector('.font-container')
@@ -298,40 +306,26 @@ function toggleOptionsMenu(elIcon) {
     }
 }
 
+document.querySelectorAll('.emoji-container').forEach(container => {
+    // This regex matches most common emojis
+    const emojiRegex = /[\u231A-\u231B\u2328\u2388\u23CF-\u23D3\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA-\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2605\u2607-\u2612\u2614-\u2685\u26A0-\u26FA\u2701-\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934-\u2935\u2B05-\u2B07\u2B1B-\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83D[\uDE80-\uDEFF]|\uD83E[\uDD00-\uDDFF]/g;
+    // Replace each emoji in the container's text with a span-wrapped emoji
+    container.innerHTML = container.innerHTML.replace(emojiRegex, '<span class="emoji" onclick="onUseEmoji(this)">$&</span>');
+})
 
-document.addEventListener('click', function (event) {
-    // Retrieve all overlays
-    const overlays = document.querySelectorAll('.image-button-container-overlay:not(.hidden)')
+function onUseEmoji(elEmoji) {
+    const textInput = document.getElementById('text')
 
-    // Check if the click target is part of any overlay
-    let isClickInsideOverlay = Array.from(overlays).some(overlay => {
-        return overlay.contains(event.target)
-    })
+    const savedText = textInput.value
 
-    // If the click is not inside any open overlay, hide all overlays
-    if (!isClickInsideOverlay) {
-        overlays.forEach(overlay => overlay.classList.add('hidden'))
-    }
-});
+    textInput.value = savedText + elEmoji.innerText
 
-
-
-function onOpenImageMenu(event, elImg) {
-    event.stopPropagation()
-
-    const overlayID = parseInt(elImg.id.replace(/\D/g, ''), 10)
-    const overlay = `overlay${overlayID}`
-    const imageButtonMenu = document.getElementById(overlay)
-    const allOverlays = document.querySelectorAll('.image-button-container-overlay')
-
-    allOverlays.forEach(overlay => {
-        if (overlay.id !== overlay)
-            overlay.classList.add('hidden')
-    })
-
-    imageButtonMenu.classList.remove('hidden')
+    if (textToEdit) onAddText()
 }
 
+
+
+// Saved Memes
 
 function onOpenMemeMenu(event, elMeme) {
     event.stopPropagation()
@@ -349,123 +343,18 @@ function onOpenMemeMenu(event, elMeme) {
     memeButtonMenu.classList.remove('hidden')
 }
 
+function onReturnMemeToEditor(elMemeImg) {
+    const elMemeID = parseInt(elMemeImg.id.replace(/\D/g, ''), 10)
 
+    currentMeme = getMemeArray().find(meme => meme.id === elMemeID)
 
-function onChangePage(direction, value) {
-    const pageAmount = Math.ceil(pageBy.total / pageBy.amount) - 1
+    const elSavedMemeImg = document.querySelector(`#img${currentMeme.imgID}`)
 
-    if (direction === 'up') {
-        if (pageBy.page === pageAmount) {
-            pageBy.page = 0
-        } else {
-            pageBy.page += +value
-        }
-    }
-    if (direction === 'down') {
-        if (pageBy.page === 0) {
-            pageBy.page = pageAmount
-        } else {
-            pageBy.page += +value
-        }
-    }
-    renderGallery()
-    renderPageNumbers()
-}
+    coverCanvasWithImg(elSavedMemeImg)
 
-function renderPageNumbers() {
-    const previousPage = document.querySelector('.pagePrev')
-    const currentPage = document.querySelector('.pageCurr')
-    const nextPage = document.querySelector('.pageNext')
+    textArray = currentMeme.lines.map(line => ({ ...line }))
 
-    const pageAmount = Math.ceil(pageBy.total / pageBy.amount) - 1
+    renderText()
 
-    currentPage.innerText = pageBy.page
-
-    if (+currentPage.innerText === 0) {
-        previousPage.innerText = pageAmount
-    } else {
-        previousPage.innerText = currentPage.innerText - 1
-    }
-    if (+currentPage.innerText === pageAmount) {
-        nextPage.innerText = 0
-    } else {
-        nextPage.innerText = +currentPage.innerText + 1
-    }
-}
-
-function onChangePageNums(elBtn) {
-    pageBy.page = +elBtn.innerText
-
-    renderGallery()
-    renderPageNumbers()
-}
-
-
-
-function onChangeMemePage(direction, value) {
-    const pageAmount = Math.ceil(memePageBy.total / memePageBy.amount) - 1
-
-    if (direction === 'up') {
-        if (memePageBy.page === pageAmount) {
-            memePageBy.page = 0
-        } else {
-            memePageBy.page += +value
-        }
-    }
-    if (direction === 'down') {
-        if (memePageBy.page === 0) {
-            memePageBy.page = pageAmount
-        } else {
-            memePageBy.page += +value
-        }
-    }
-    renderSavedMemes()
-    renderMemePageNumbers()
-}
-
-function renderMemePageNumbers() {
-    const previousPage = document.querySelector('.pageMemePrev')
-    const currentPage = document.querySelector('.pageMemeCurr')
-    const nextPage = document.querySelector('.pageMemeNext')
-
-    const pageAmount = Math.ceil(memePageBy.total / memePageBy.amount) - 1
-
-    currentPage.innerText = memePageBy.page
-
-    if (+currentPage.innerText === 0) {
-        previousPage.innerText = pageAmount
-    } else {
-        previousPage.innerText = currentPage.innerText - 1
-    }
-    if (+currentPage.innerText === pageAmount) {
-        nextPage.innerText = 0
-    } else {
-        nextPage.innerText = +currentPage.innerText + 1
-    }
-}
-
-function onChangeMemePageNums(elBtn) {
-    memePageBy.page = +elBtn.innerText
-
-    renderSavedMemes()
-    renderMemePageNumbers()
-}
-
-
-
-document.querySelectorAll('.emoji-container').forEach(container => {
-    // This regex matches most common emojis
-    const emojiRegex = /[\u231A-\u231B\u2328\u2388\u23CF-\u23D3\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA-\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2605\u2607-\u2612\u2614-\u2685\u26A0-\u26FA\u2701-\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934-\u2935\u2B05-\u2B07\u2B1B-\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDE4F]|\uD83D[\uDE80-\uDEFF]|\uD83E[\uDD00-\uDDFF]/g;
-    // Replace each emoji in the container's text with a span-wrapped emoji
-    container.innerHTML = container.innerHTML.replace(emojiRegex, '<span class="emoji" onclick="onUseEmoji(this)">$&</span>');
-})
-
-function onUseEmoji(elEmoji) {
-    const textInput = document.getElementById('text')
-
-    const savedText = textInput.value
-
-    textInput.value = savedText + elEmoji.innerText
-
-    if (textToEdit) onAddText()
+    currentMeme = null
 }
