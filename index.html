@@ -71,13 +71,13 @@
                 </div>
 
                 <div class="page-container">
-                    <div class="page next-page" onclick="onChangePage('up', 1, this)">
+                    <div class="page next-page" id="gallery-page" onclick="onChangePage('up', 1, this)">
                         <i class="fa-solid fa-chevron-right icon-correct"></i>
                     </div>
-                    <div class="page pagePrev" onclick="onChangePageNums(this)"></div>
-                    <div class="page pageCurr" onclick="onChangePageNums(this)"></div>
-                    <div class="page pageNext" onclick="onChangePageNums(this)"></div>
-                    <div class="page prev-page" onclick="onChangePage('down', -1)">
+                    <div class="page galleryPagePrev" id="gallery-page" onclick="onChangePageNums(this)"></div>
+                    <div class="page galleryPageCurr" id="gallery-page" onclick="onChangePageNums(this)"></div>
+                    <div class="page galleryPageNext" id="gallery-page" onclick="onChangePageNums(this)"></div>
+                    <div class="page prev-page" id="gallery-page" onclick="onChangePage('down', -1, this)">
                         <i class="fa-solid fa-chevron-left icon-correct"></i>
                     </div>
                 </div>
@@ -163,14 +163,15 @@
 
             <section class="saved-memes-container disappear">
                 <article class="saved-memes"></article>
+                
                 <div class="page-container">
-                    <div class="page next-page" onclick="onChangeMemePage('up', 1)">
+                    <div class="page next-page" id="meme-page" onclick="onChangePage('up', 1, this)">
                         <i class="fa-solid fa-chevron-right icon-correct"></i>
                     </div>
-                    <div class="page pageMemePrev" onclick="onChangeMemePageNums(this)"></div>
-                    <div class="page pageMemeCurr" onclick="onChangeMemePageNums(this)"></div>
-                    <div class="page pageMemeNext" onclick="onChangeMemePageNums(this)"></div>
-                    <div class="page prev-page" onclick="onChangeMemePage('down', -1)">
+                    <div class="page memePagePrev"  id="meme-page" onclick="onChangePageNums(this)"></div>
+                    <div class="page memePageCurr"  id="meme-page" onclick="onChangePageNums(this)"></div>
+                    <div class="page memePageNext"  id="meme-page" onclick="onChangePageNums(this)"></div>
+                    <div class="page prev-page" id="meme-page" onclick="onChangePage('down', -1, this)">
                         <i class="fa-solid fa-chevron-left icon-correct"></i>
                     </div>
                 </div>

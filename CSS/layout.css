@@ -158,18 +158,18 @@ header {
     grid-area: prev;
 }
 
-.pagePrev,
-.pageMemePrev {
+.galleryPagePrev,
+.memePagePrev {
     grid-area: one;
 }
 
-.pageCurr,
-.pageMemeCurr {
+.galleryPageCurr,
+.memePageCurr {
     grid-area: two;
 }
 
-.pageNext,
-.pageMemeNext {
+.galleryPageNext,
+.memePageNext {
     grid-area: three;
 }
 

@@ -2,8 +2,8 @@
 
 
 let filterBy = { keyword: '' }
-const pageBy = { page: 0, amount: 6, total: 0 }
-const memePageBy = { page: 0, amount: 6, total: 0 }
+const pageBy = [ { page: 'gallery', currentPage: 0, amountPerPage: 6, totalAmount: 0 },
+                { page: 'meme', currentPage: 0, amountPerPage: 6, totalAmount: 0 }]
 
 let keywordsToDisplay = [{ keyword: 'funny', size: 16 }, { keyword: 'cool', size: 20 }, { keyword: 'cute', size: 25 }, { keyword: 'amazing', size: 16 }, { keyword: 'hilarious', size: 19 }]
 let currentMeme = null
@@ -16,8 +16,7 @@ function onInit() {
 
     addListeners()
 
-    renderPageNumbers()
-    renderMemePageNumbers()
+    pageBy.forEach(pageObject => renderPageNumbers(pageObject.page))
 }
 
 function renderGallery() {
@@ -94,7 +93,7 @@ function onSwitchTabs(element) {
         savedContainer.classList.remove('disappear')
         editorContainer.classList.add('disappear')
         galleryContainer.classList.add('disappear')
-        renderMemePageNumbers()
+        renderPageNumbers('meme')
     }
 }
 
@@ -114,7 +113,7 @@ function onSearchGallery(element) {
     }
 
     renderGallery()
-    renderPageNumbers()
+    renderPageNumbers('gallery')
 }
 
 function onAddKeywordsToDisplay() {
@@ -206,7 +205,7 @@ function onUploadImage(event) {
 
     setTimeout(() => {
         renderGallery()
-        renderPageNumbers()
+        renderPageNumbers('gallery')
     }, 500)
 }
 
@@ -231,9 +230,9 @@ function onDeleteImage(elDeleteBtn) {
 
     setTimeout(() => {
         getImgArray()
-        pageBy.page = Math.ceil(pageBy.total / pageBy.amount) - 1
+        pageBy[0].currentPage = Math.ceil(pageBy[0].totalAmount / pageBy[0].amountPerPage) - 1
         renderGallery()
-        renderPageNumbers()
+        renderPageNumbers('gallery')
     }, 500);
 }
 
@@ -246,7 +245,6 @@ function onDeleteMeme(elDeleteBtn) {
     deleteMeme(memeIDToDelete)
 
     renderSavedMemes()
-    renderMemePageNumbers()
 }
 
 document.addEventListener('click', function (event) {

@@ -49,12 +49,12 @@ body {
     cursor: pointer;
 }
 
-.pagePrev,
-.pageCurr,
-.pageNext,
-.pageMemePrev,
-.pageMemeCurr,
-.pageMemeNext {
+.galleryPagePrev,
+.galleryPageCurr,
+.galleryPageNext,
+.memePagePrev,
+.memePageCurr,
+.memePageNext {
     margin-block-start: 0.62em;
     height: 40px;
     width: 40px;
@@ -88,17 +88,17 @@ body {
     transform: scaleX(-1);
 }
 
-.pageCurr,
-.pageMemeCurr {
+.galleryPageCurr,
+.memePageCurr {
     background-color: rgb(255, 255, 255);
 }
 
-.pagePrev:hover,
-.pageCurr:hover,
-.pageNext:hover,
-.pageMemePrev:hover,
-.pageMemeCurr:hover,
-.pageMemeNext:hover,
+.gallerPagePrev:hover,
+.galleryPageCurr:hover,
+.galleryPageNext:hover,
+.memePagePrev:hover,
+.memePageCurr:hover,
+.memePageNext:hover,
 .page i:hover {
     background-color: #d7d7d7bf;
 }
