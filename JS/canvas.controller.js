@@ -443,39 +443,19 @@ function onChangeSettings(elBtn) {
     textSettings.strokeWidth = strokeWidth
 
     if (elBtn === boldBtn) {
-        if (textSettings.italicize === 'bold ') {
-            textSettings.italicize = ''
-        } else {
-            textSettings.italicize = 'bold '
-        }
+        textSettings.italicize = textSettings.italicize === 'bold' ? '' : 'bold'
     }
     if (elBtn === italicizeBtn) {
-        if (textSettings.italicize === 'italic ') {
-            textSettings.italicize = ''
-        } else {
-            textSettings.italicize = 'italic '
-        }
+        textSettings.italicize = textSettings.italicize === 'italic' ? '' : 'italic'
     }
     if (elBtn === underlineBtn) {
-        if (textSettings.underline) {
-            textSettings.underline = false
-        } else {
-            textSettings.underline = true
-        }
+        textSettings.underline = textSettings.underline ? false : true
     }
     if (elBtn === strikethroughBtn) {
-        if (textSettings.strikethrough) {
-            textSettings.strikethrough = false
-        } else {
-            textSettings.strikethrough = true
-        }
+        textSettings.strikethrough = textSettings.strikethrough ? false : true
     }
     if (elBtn === fillRectBtn) {
-        if (textSettings.fillRect) {
-            textSettings.fillRect = false
-        } else {
-            textSettings.fillRect = true
-        }
+        textSettings.fillRect = textSettings.fillRect ? false : true
     }
 
     strokeWidthCounter.innerText = strokeWidth
