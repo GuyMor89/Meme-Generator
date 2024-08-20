@@ -1,4 +1,3 @@
-
 .main-container {
     display: grid;
 
@@ -76,6 +75,16 @@ header {
     grid-auto-flow: column;
 
     gap: 1em;
+}
+
+.upload-button-container {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+.find-button-container {
+    grid-column: 2/3;
+    grid-row: 2/3;
 }
 
 .upload-button-container label,
